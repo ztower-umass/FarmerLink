@@ -5,7 +5,7 @@
 Team Aleph
 Zachary Tower, Github ztower-umass \
 Vidya Gopal, Github vidyago \
-Siddharth Raju, Github sraju2033
+Siddharth Raju, Github sid2033
 
 ## Innovative Idea
 
