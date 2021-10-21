@@ -19,3 +19,12 @@
     bottom: 0;
     width: 100%;
 }
+
+#main-page-name {
+    background-color: black;
+}
+
+#main-page-heading {
+    color: greenyellow;
+    text-align: center;
+}
