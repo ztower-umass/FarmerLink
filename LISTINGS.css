@@ -1,3 +1,4 @@
+
 #main-header {
     background-color: green;
 }
@@ -19,11 +20,6 @@
     width: 100%;
 }
 
-#main-page-name {
+#main-crops {
     background-color: black;
-}
-
-#main-page-heading {
-    color: greenyellow;
-    text-align: center;
 }
