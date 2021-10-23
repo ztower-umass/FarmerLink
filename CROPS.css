@@ -1,0 +1,45 @@
+#main-header {
+    background-color: green;
+}
+
+#main-heading {
+    color: greenyellow;
+    justify-content: left;
+    margin-right: 30px;
+}
+
+#profile-button {
+    background-color: greenyellow;
+    color: black;
+}
+
+#main-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+#main-page-name {
+    background-color: black;
+}
+
+#main-page-heading {
+    color: greenyellow;
+    text-align: center;
+}
+
+#menu-heading {
+    text-align: center;
+}
+
+#weather-box {
+    width: 100%;
+    height: 50%;
+    text-align: center;
+}
+
+#crop-box {
+    width: 100%;
+    height: 50%;
+    text-align: center;
+}
