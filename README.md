@@ -2,7 +2,7 @@
 
 ## Team Overview
 
-Team Aleph
+Team Aleph \
 Zachary Tower, Github ztower-umass \
 Vidya Gopal, Github vidyago \
 Siddharth Raju, Github sid2033
