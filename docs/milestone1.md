@@ -11,7 +11,7 @@
 
 ## Division of Labor
 * Vidya: user.html, search.html, index.html
-* Sidd: forum.html, crops.html, template.html
+* Sid: forum.html, crops.html, template.html
 * Zach: listings.html, milestone1.md, diagrams
 
 
