@@ -73,4 +73,4 @@ The following is a collection of screenshots that demonstrate the current site m
 
 ### UserPage, shows user profile information
 
-![UserPage, shows user profile information](pics/user.png)
+![UserPage, shows user profile information](pics/user.PNG)
