@@ -70,10 +70,7 @@ The following is a collection of screenshots that demonstrate the current site m
 ### Crops, shows crop data for your area
 
 ![Crops, shows crop data for your area](pics/crops.png)
-<<<<<<< HEAD
 
 ### UserPage, shows user profile information
 
 ![UserPage, shows user profile information](pics/user.png)
-=======
->>>>>>> d47d4c1865045eb6f0e3661b722758cbe9f4004d
