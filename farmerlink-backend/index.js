@@ -23,7 +23,8 @@ app.get('/', (req, res) => {
 
 //For URL formats, use "/nameOfPage/details"
 //Make sure to set the headers before sending the response
-app.get('/forum/getSampleCommentData', (req, res) => {
+//Retrieves post data
+app.get('/forum/getPostData', (req, res) => {
   res.set(headers);
   let respJSON = {"commentTitle": "", "user": "", "upvotes": 0, "downvotes": 0}
   respJSON.commentTitle = faker.lorem.sentences();
@@ -33,6 +34,46 @@ app.get('/forum/getSampleCommentData', (req, res) => {
   res.send(JSON.stringify(respJSON));
 });
 
+//Adds a comment to a specific post
+app.post('/forum/addComment', (req, res) => {
+  res.set(headers);
+  // Use request body appropriately when implementing full back-end functionality
+  let data = req.body;
+  //Store new comment appropriately
+  res.send(JSON.stringify(200));
+});
+
+//Adds upvote to a post
+app.post('/forum/upvote', (req, res) => {
+  res.set(headers);
+  // Use request body appropriately when implementing full back-end functionality
+  let data = req.body;
+  res.send(JSON.stringify(200));
+});
+
+//Adds upvote to a post
+app.post('/forum/downvote', (req, res) => {
+  res.set(headers);
+  // Use request body appropriately when implementing full back-end functionality
+  let data = req.body;
+  res.send(JSON.stringify(200));
+});
+
+//Gets comments for a specific spost
+app.post('/forum/getCommentforPost', (req, res) => {
+  res.set(headers);
+  // Use request body appropriately when implementing full back-end functionality
+  let data = req.body;
+  //Get the comments for the specific post
+  let commentData = {"users": [], "comments": []};
+  for (let i = 0; i < 5; ++i) {
+    commentData.users.push(faker.internet.userName());
+    commentData.comments.push(faker.lorem.sentences());
+  }
+  res.send(JSON.stringify(commentData));
+});
+
+//Adds new post to server
 app.post('/forum/makePost', (req, res) => {
   res.set(headers);
   // Use request body appropriately when implementing full back-end functionality
@@ -41,19 +82,20 @@ app.post('/forum/makePost', (req, res) => {
   res.send(JSON.stringify(200));
 });
 
+//Retrieves posts made by current user
 app.post('/forum/myPosts', (req, res) => {
   res.set(headers);
   // Use request body appropriately when implementing full back-end functionality
   let data = req.body;
   let respJSON = {"title":[]};
-  respJSON.title.push(faker.lorem.words());
-  respJSON.title.push(faker.lorem.words());
-  respJSON.title.push(faker.lorem.words());
-  respJSON.title.push(faker.lorem.words());
-  respJSON.title.push(faker.lorem.words()); 
+
+  for (let i = 0; i < 5; ++i) {
+    respJSON.title.push(faker.lorem.words());
+  }
   res.send(JSON.stringify(respJSON));
 });
 
+//Retrives appropriate crop and weather data based on zip and region inputs 
 app.post('/crops/getCropWeatherData', (req, res) => {
   res.set(headers);
   // Use request body appropriately when implementing full back-end functionality

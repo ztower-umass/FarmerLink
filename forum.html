@@ -61,9 +61,9 @@
         <div class="modal-content">
           <span class="close">&times;</span>
           <h6> Comment Text:</h6>
-          <input type = "text">
+          <input type = "text" id = "new-comment-text">
           <br>
-          <button type="button" class="btn btn-success" onclick = "postComment()" id = "add-comment">Comment</button>
+          <button type="button" class="btn btn-success" onclick = "postComment()" id = "post-comment-button">Comment</button>
         </div>
       
       </div>
@@ -73,25 +73,9 @@
         <!-- Modal content -->
         <div class="modal-content">
           <span class="close">&times;</span>
-          <div class="overflow-auto">
-            <h6>Bob123:</h6>
-            <p>Sample Comment Here</p>
-            <br>
-            <h6>Ben458:</h6>
-            <p>Sample Comment Here</p>
-            <br>
-            <h6>John872:</h6>
-            <p>Sample Comment Here</p>
-            <br>
-            <h6>Bob55:</h6>
-            <p>Sample Comment Here</p>
-            <br>
-            <h6>Tim80:</h6>
-            <p>Sample Comment Here</p>
-            <br>
-
+          <div class="overflow-auto" id = "inner-comment-modal">
           </div>
-          <button type="button" class="btn btn-danger" onclick = "closeComments()" id = "add-comment">Close</button>
+          <button type="button" class="btn btn-danger" onclick = "closeComments()" id = "close-comments">Close</button>
         </div>
       
       </div>
@@ -104,7 +88,7 @@
           <h6> Post Title:</h6>
           <input type = "text" id = "new-post-title">
           <br>
-          <button type="button" class="btn btn-success" onclick = "makePost()" id = "add-comment">Create Post</button>
+          <button type="button" class="btn btn-success" onclick = "makePost()" id = "create-post-button">Create Post</button>
         </div>
       
       </div>
@@ -117,7 +101,7 @@
           <div id = "modal-my-posts">
           </div>
           <br>
-          <button type="button" class="btn btn-danger" onclick = "closeMyPosts()" id = "add-comment">Close</button>
+          <button type="button" class="btn btn-danger" onclick = "closeMyPosts()" id = "close-posts-button">Close</button>
         </div>
       
       </div>
@@ -134,8 +118,8 @@
 
         let max = 0;
 
-        async function getCommentData() {
-          const res = await fetch("http://localhost:3000/forum/getSampleCommentData", {
+        async function getPostData() {
+          const res = await fetch("http://localhost:3000/forum/getPostData", {
             method: 'GET',
             mode: 'cors',
             headers: {
@@ -166,7 +150,7 @@
           let addCommentButton;
           let viewCommentButton;
 
-          const values = await getCommentData();
+          const values = await getPostData();
 
           newDiv = document.createElement("div");
           newTitle = document.createElement("h6");
@@ -274,12 +258,49 @@
           postModal.style.display = "block";
         }
 
-        function postComment() {
+        async function postComment() {
           postModal.style.display = "none";
+          let comment = document.getElementById("new-comment-text").value;
+          const res = await fetch("http://localhost:3000/forum/addComment", {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+          let data = await res.json();
+          alert("Comment Posted");
         }
 
-        function viewComments() {
+        async function viewComments() {
+          document.getElementById("inner-comment-modal").innerHTML = "";
           viewModal.style.display = "block";
+          const res = await fetch("http://localhost:3000/forum/getCommentforPost", {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+          let data = await res.json();
+          let users = data.users;
+          let comments = data.comments;
+
+          let newUser;
+          let newComment;
+          let newBR;
+
+          for (let i = 0; i < users.length; ++i) {
+            newUser = document.createElement("h6");
+            newComment = document.createElement("p");
+            newBR = newTitle = document.createElement("br");
+            newUser.innerHTML = users[i];
+            newComment.innerHTML = comments[i];
+          
+            document.getElementById("inner-comment-modal").appendChild(newUser);
+            document.getElementById("inner-comment-modal").appendChild(newComment);
+            document.getElementById("inner-comment-modal").appendChild(newBR);
+          }
         }
 
         function closeComments() {
@@ -301,6 +322,7 @@
             }
           });
           let data = await res.json();
+          alert("Post Created");
         }
 
         async function getMyPosts() {
@@ -329,16 +351,32 @@
           myPostsModal.style.display = "none";
         }
 
-        function upvotePost(id) {
+        async function upvotePost(id) {
           let text = document.getElementById(id).querySelector(".upvote-data").innerHTML;
           text = parseInt(text.split(" ")[1]) + 1;
           document.getElementById(id).querySelector(".upvote-data").innerHTML = "Upvotes: " + text.toString();
+          const res = await fetch("http://localhost:3000/forum/upvote", {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+          let data = await res.json();
         }
 
-        function downvotePost(id) {
+        async function downvotePost(id) {
           let text = document.getElementById(id).querySelector(".downvote-data").innerHTML;
           text = parseInt(text.split(" ")[1]) + 1;
           document.getElementById(id).querySelector(".downvote-data").innerHTML = "Downvotes: " + text.toString();
+          const res = await fetch("http://localhost:3000/forum/downvote", {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+          let data = await res.json();
         }
       </script>
   </body>
