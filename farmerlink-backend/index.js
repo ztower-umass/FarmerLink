@@ -10,13 +10,16 @@ const headers = {
 
 };
 
+//Middleware
 app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 //Try seding a request to http://localhost:3000/ to test if app is working
 app.get('/', (req, res) => {
     res.set(headers);
     res.send('API running');
-})
+});
 
 //For URL formats, use "/nameOfPage/details"
 //Make sure to set the headers before sending the response
@@ -28,7 +31,14 @@ app.get('/forum/getSampleCommentData', (req, res) => {
   respJSON.upvotes = Math.floor(Math.random() * 100);
   respJSON.downvotes = Math.floor(Math.random() * 100);
   res.send(JSON.stringify(respJSON));
-})
+});
+
+app.post('/crops/getCropWeatherData', (req, res) => {
+  res.set(headers);
+  let data = req.body;
+  console.log(data);
+  res.send(JSON.stringify(200));
+});
 
 app.listen(port, () =>
   console.log('FarmerLink Backend Listening on port 3000!'),

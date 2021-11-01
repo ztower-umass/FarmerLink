@@ -42,11 +42,11 @@
         <div class="row">
           <div class="col-sm" id = "menu-heading">
             <h3>Input ZIP</h3>
-            <input type = "text" placeholder= "95035"></input>
+            <input type = "text" id = "zip" placeholder= "95035"></input>
             <br>
             <br>
             <h3>Region</h3>
-            <input type = "text" placeholder= "Milpitas, CA"></input>
+            <input type = "text" id = "region" placeholder= "Milpitas, CA"></input>
             <br>
             <br>
             <h3>Relevant Weather Data</h3>
@@ -55,6 +55,9 @@
             <br>
             <h3>Relevant Crop Data</h3>
             <input type = "text" id = "crop-box" placeholder= "If you are looking to grow cool weather vegetables, such as beets, carrots, cabbage, cauliflower, peas, potatoes, celery, and such, try planting in early spring." readonly></input>
+            <br>
+            <br>
+            <button type="button" class="btn btn-secondary btn-lg" id = "get-data" onclick = "getData()">Get Data</button>
           </div>
         </div>
       </div>
@@ -66,5 +69,14 @@
             </ul>
           </div>
       </footer>
+
+      <script type = "text/javascript">
+        async function getData() {
+          let zipCode = document.getElementById("zip").value;
+          let region = document.getElementById("region").value;
+          let dataObj = {"zip": zipCode, "region": region};
+          console.log(dataObj);
+        }
+      </script>
   </body>
 </html>
