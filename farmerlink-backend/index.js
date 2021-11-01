@@ -33,20 +33,25 @@ app.get('/forum/getSampleCommentData', (req, res) => {
   res.send(JSON.stringify(respJSON));
 });
 
-//Outline for later Milestone
 app.post('/forum/makePost', (req, res) => {
   res.set(headers);
   // Use request body appropriately when implementing full back-end functionality
   let data = req.body;
+  //Store new post appropriately
   res.send(JSON.stringify(200));
 });
 
-//Outline for later Milestone
 app.post('/forum/myPosts', (req, res) => {
   res.set(headers);
   // Use request body appropriately when implementing full back-end functionality
   let data = req.body;
-  res.send(JSON.stringify(200));
+  let respJSON = {"title":[]};
+  respJSON.title.push(faker.lorem.words());
+  respJSON.title.push(faker.lorem.words());
+  respJSON.title.push(faker.lorem.words());
+  respJSON.title.push(faker.lorem.words());
+  respJSON.title.push(faker.lorem.words()); 
+  res.send(JSON.stringify(respJSON));
 });
 
 app.post('/crops/getCropWeatherData', (req, res) => {

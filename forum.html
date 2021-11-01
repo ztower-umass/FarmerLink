@@ -112,15 +112,10 @@
       <div id="my-posts-modal" class="modal">
 
         <!-- Modal content -->
-        <div class="modal-content">
+        <div class="modal-content" id = "inner-my-posts-modal">
           <span class="close">&times;</span>
-          <h6> Post Title: Sample Title</h6>
-          <h6> Post Title: Sample Title</h6>
-          <h6> Post Title: Sample Title</h6>
-          <h6> Post Title: Sample Title</h6>
-          <h6> Post Title: Sample Title</h6>
-          <h6> Post Title: Sample Title</h6>
-          <h6> Post Title: Sample Title</h6>
+          <div id = "modal-my-posts">
+          </div>
           <br>
           <button type="button" class="btn btn-danger" onclick = "closeMyPosts()" id = "add-comment">Close</button>
         </div>
@@ -140,7 +135,6 @@
         let max = 0;
 
         async function getCommentData() {
-          let result;
           const res = await fetch("http://localhost:3000/forum/getSampleCommentData", {
             method: 'GET',
             mode: 'cors',
@@ -153,14 +147,15 @@
         }
 
         window.onload = async () => {
+
+          getMyPosts();
         
           for (let i = 0; i < 10; ++i) {
-            postCreation(i, "");
+            postCreation(i, "***default***");
           }
         };
 
         async function postCreation(i, title, user) {
-          console.log("CREATING");
           let newDiv;
           let newTitle;
           let newUser;
@@ -172,7 +167,6 @@
           let viewCommentButton;
 
           const values = await getCommentData();
-          console.log(values);
 
           newDiv = document.createElement("div");
           newTitle = document.createElement("h6");
@@ -186,7 +180,7 @@
           newDiv.className = "listing-post";
           newDiv.id = `listing-post${i + 1}`;
 
-          if (title === "") {
+          if (title === "***default***") {
             newTitle.innerHTML = values.commentTitle;
           }
           else {
@@ -296,9 +290,35 @@
           createPostModal.style.display = "block";
         }
 
-        function makePost() {
+        async function makePost() {
           createPostModal.style.display = "none";
           postCreation(max, document.getElementById("new-post-title").value, "You");
+          const res = await fetch("http://localhost:3000/forum/makePost", {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+          let data = await res.json();
+        }
+
+        async function getMyPosts() {
+          const res = await fetch("http://localhost:3000/forum/myPosts", {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+          let data = await res.json();
+          let titleArr = data.title;
+          let newHeading;
+          for (let i = 0; i < titleArr.length; ++i) {
+            newHeading = document.createElement("h6");
+            newHeading.innerHTML = "Post Title: " + titleArr[i];
+            document.getElementById("modal-my-posts").appendChild(newHeading);
+          }
         }
 
         function myPosts() {
