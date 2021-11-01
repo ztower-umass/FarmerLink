@@ -15,7 +15,7 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-//Try seding a request to http://localhost:3000/ to test if app is working
+//Try sending a request to http://localhost:3000/ to test if app is working
 app.get('/', (req, res) => {
     res.set(headers);
     res.send('API running');
@@ -30,8 +30,23 @@ app.get('/forum/getSampleCommentData', (req, res) => {
   respJSON.user = faker.internet.userName();
   respJSON.upvotes = Math.floor(Math.random() * 100);
   respJSON.downvotes = Math.floor(Math.random() * 100);
-  console.log("CALLED");
   res.send(JSON.stringify(respJSON));
+});
+
+//Outline for later Milestone
+app.post('/forum/makePost', (req, res) => {
+  res.set(headers);
+  // Use request body appropriately when implementing full back-end functionality
+  let data = req.body;
+  res.send(JSON.stringify(200));
+});
+
+//Outline for later Milestone
+app.post('/forum/myPosts', (req, res) => {
+  res.set(headers);
+  // Use request body appropriately when implementing full back-end functionality
+  let data = req.body;
+  res.send(JSON.stringify(200));
 });
 
 app.post('/crops/getCropWeatherData', (req, res) => {
@@ -43,6 +58,8 @@ app.post('/crops/getCropWeatherData', (req, res) => {
   respJSON.cropData = faker.lorem.sentences();
   res.send(JSON.stringify(respJSON));
 });
+
+//Add your endpoints here
 
 app.listen(port, () =>
   console.log('FarmerLink Backend Listening on port 3000'),

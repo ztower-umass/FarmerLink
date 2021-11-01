@@ -102,7 +102,7 @@
         <div class="modal-content">
           <span class="close">&times;</span>
           <h6> Post Title:</h6>
-          <input type = "text">
+          <input type = "text" id = "new-post-title">
           <br>
           <button type="button" class="btn btn-success" onclick = "makePost()" id = "add-comment">Create Post</button>
         </div>
@@ -137,6 +137,8 @@
 
       <script type = "text/javascript">
 
+        let max = 0;
+
         async function getCommentData() {
           let result;
           const res = await fetch("http://localhost:3000/forum/getSampleCommentData", {
@@ -151,6 +153,14 @@
         }
 
         window.onload = async () => {
+        
+          for (let i = 0; i < 10; ++i) {
+            postCreation(i, "");
+          }
+        };
+
+        async function postCreation(i, title, user) {
+          console.log("CREATING");
           let newDiv;
           let newTitle;
           let newUser;
@@ -161,50 +171,66 @@
           let addCommentButton;
           let viewCommentButton;
 
-          for (let i = 0; i < 10; ++i) {
-            const values = await getCommentData();
+          const values = await getCommentData();
+          console.log(values);
 
-            newDiv = document.createElement("div");
-            newTitle = document.createElement("h6");
-            newUser = document.createElement("h6");
-            newUpv = document.createElement("h6");
-            newDownv = document.createElement("h6");
-            upvButton = document.createElement("button");
-            downvButton = document.createElement("button");
-            addCommentButton = document.createElement("button");
-            viewCommentButton = document.createElement("button");
-            newDiv.className = "listing-post";
-            newDiv.id = `listing-post${i + 1}`;
+          newDiv = document.createElement("div");
+          newTitle = document.createElement("h6");
+          newUser = document.createElement("h6");
+          newUpv = document.createElement("h6");
+          newDownv = document.createElement("h6");
+          upvButton = document.createElement("button");
+          downvButton = document.createElement("button");
+          addCommentButton = document.createElement("button");
+          viewCommentButton = document.createElement("button");
+          newDiv.className = "listing-post";
+          newDiv.id = `listing-post${i + 1}`;
+
+          if (title === "") {
             newTitle.innerHTML = values.commentTitle;
-            newUser.innerHTML = "User: " + values.user;
-            newUpv.innerHTML = "Upvotes: " + values.upvotes;
-            newDownv.innerHTML = "Downvotes: " + values.downvotes;
-            upvButton.className = "btn btn-primary";
-            upvButton.id = `upvote-button${i + 1}`;
-            upvButton.innerHTML = "U";
-            downvButton.className = "btn btn-danger";
-            downvButton.id = `downvote-button${i + 1}`;
-            downvButton.innerHTML = "D";
-            addCommentButton.className = "btn btn-success";
-            addCommentButton.id = `add-comment${i + 1}`;
-            addCommentButton.innerHTML = "Comment";
-            addCommentButton.onclick = function() {addComment()};
-            viewCommentButton.className = "btn btn-warning";
-            viewCommentButton.id = `view-comment${i + 1}`;
-            viewCommentButton.innerHTML = "View Comments";
-            viewCommentButton.onclick = function() {viewComments()};
-
-            newDiv.appendChild(newTitle);
-            newDiv.appendChild(newUser);
-            newDiv.appendChild(newUpv);
-            newDiv.appendChild(newDownv);
-            newDiv.appendChild(upvButton);
-            newDiv.appendChild(downvButton);
-            newDiv.appendChild(addCommentButton);
-            newDiv.appendChild(viewCommentButton);
-            document.getElementById("listing-scrolling").appendChild(newDiv);
           }
-        };
+          else {
+            newTitle.innerHTML = title;
+          }
+
+          if (user === "You") { 
+            newUser.innerHTML = "User: " + user;
+          }
+          else {
+            newUser.innerHTML = "User: " + values.user;
+          }
+          newUpv.innerHTML = "Upvotes: " + values.upvotes;
+          newUpv.className = "upvote-data";
+          newDownv.innerHTML = "Downvotes: " + values.downvotes;
+          newDownv.className = "downvote-data";
+          upvButton.className = "btn btn-primary";
+          upvButton.id = `upvote-button${i + 1}`;
+          upvButton.innerHTML = "U";
+          upvButton.onclick = function() {upvotePost(newDiv.id)};
+          downvButton.className = "btn btn-danger";
+          downvButton.id = `downvote-button${i + 1}`;
+          downvButton.innerHTML = "D";
+          downvButton.onclick = function() {downvotePost(newDiv.id)};
+          addCommentButton.className = "btn btn-success";
+          addCommentButton.id = `add-comment${i + 1}`;
+          addCommentButton.innerHTML = "Comment";
+          addCommentButton.onclick = function() {addComment()};
+          viewCommentButton.className = "btn btn-warning";
+          viewCommentButton.id = `view-comment${i + 1}`;
+          viewCommentButton.innerHTML = "View Comments";
+          viewCommentButton.onclick = function() {viewComments()};
+
+          newDiv.appendChild(newTitle);
+          newDiv.appendChild(newUser);
+          newDiv.appendChild(newUpv);
+          newDiv.appendChild(newDownv);
+          newDiv.appendChild(upvButton);
+          newDiv.appendChild(downvButton);
+          newDiv.appendChild(addCommentButton);
+          newDiv.appendChild(viewCommentButton);
+          document.getElementById("listing-scrolling").prepend(newDiv);
+          max++;
+        }
 
         let postModal = document.getElementById("post-comment");
         let viewModal = document.getElementById("view-comments");
@@ -272,6 +298,7 @@
 
         function makePost() {
           createPostModal.style.display = "none";
+          postCreation(max, document.getElementById("new-post-title").value, "You");
         }
 
         function myPosts() {
@@ -280,6 +307,18 @@
 
         function closeMyPosts() {
           myPostsModal.style.display = "none";
+        }
+
+        function upvotePost(id) {
+          let text = document.getElementById(id).querySelector(".upvote-data").innerHTML;
+          text = parseInt(text.split(" ")[1]) + 1;
+          document.getElementById(id).querySelector(".upvote-data").innerHTML = "Upvotes: " + text.toString();
+        }
+
+        function downvotePost(id) {
+          let text = document.getElementById(id).querySelector(".downvote-data").innerHTML;
+          text = parseInt(text.split(" ")[1]) + 1;
+          document.getElementById(id).querySelector(".downvote-data").innerHTML = "Downvotes: " + text.toString();
         }
       </script>
   </body>
