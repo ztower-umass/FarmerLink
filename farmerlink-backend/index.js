@@ -30,16 +30,20 @@ app.get('/forum/getSampleCommentData', (req, res) => {
   respJSON.user = faker.internet.userName();
   respJSON.upvotes = Math.floor(Math.random() * 100);
   respJSON.downvotes = Math.floor(Math.random() * 100);
+  console.log("CALLED");
   res.send(JSON.stringify(respJSON));
 });
 
 app.post('/crops/getCropWeatherData', (req, res) => {
   res.set(headers);
+  // Use request body appropriately when implementing full back-end functionality
   let data = req.body;
-  console.log(data);
-  res.send(JSON.stringify(200));
+  let respJSON = {"weatherData": "", "cropData": ""};
+  respJSON.weatherData = faker.lorem.sentences();
+  respJSON.cropData = faker.lorem.sentences();
+  res.send(JSON.stringify(respJSON));
 });
 
 app.listen(port, () =>
-  console.log('FarmerLink Backend Listening on port 3000!'),
+  console.log('FarmerLink Backend Listening on port 3000'),
 );

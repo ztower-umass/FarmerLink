@@ -41,76 +41,6 @@
           <div class="col-sm" id = "menu-heading">
             <h5>Posts</h5>
             <div class="overflow-auto" id = "listing-scrolling">
-              <div class = "listing-post">
-                <h6 class = "listing-name">What is the average water use by farmers in the US?</h6>
-                <h6>User: John123</h6>
-                <h6>Upvotes: 5</h6>
-                <h6>Downvotes: 2</h6>
-                <button type="button" class="btn btn-primary">U</button>
-                <button type="button" class="btn btn-danger">D</button>
-                <button type="button" class="btn btn-success" id = "add-comment" onclick = "addComment()">Comment</button>
-                <button type="button" class="btn btn-warning" id = "add-comment" onclick = "viewComments()">View Comments</button>
-              </div>
-              <div class = "listing-post">
-                <h6 class = "listing-name">Most destructive pest in the northwest?</h6>
-                <h6>User: Will878</h6>
-                <h6>Upvotes: 9</h6>
-                <h6>Downvotes: 1</h6>
-                <button type="button" class="btn btn-primary">U</button>
-                <button type="button" class="btn btn-danger">D</button>
-                <button type="button" class="btn btn-success" id = "add-comment" onclick = "addComment()">Comment</button>
-                <button type="button" class="btn btn-warning" id = "add-comment" onclick = "viewComments()">View Comments</button>
-              </div>
-              <div class = "listing-post">
-                <h6 class = "listing-name">Most expensive state to farm in?</h6>
-                <h6>User: Tom7</h6>
-                <h6>Upvotes: 19</h6>
-                <h6>Downvotes: 5</h6>
-                <button type="button" class="btn btn-primary">U</button>
-                <button type="button" class="btn btn-danger">D</button>
-                <button type="button" class="btn btn-success" id = "add-comment" onclick = "addComment()">Comment</button>
-                <button type="button" class="btn btn-warning" id = "add-comment" onclick = "viewComments()">View Comments</button>
-              </div>
-              <div class = "listing-post">
-                <h6 class = "listing-name">Best tractor in 2021?</h6>
-                <h6>User: J956</h6>
-                <h6>Upvotes: 1</h6>
-                <h6>Downvotes: 1</h6>
-                <button type="button" class="btn btn-primary">U</button>
-                <button type="button" class="btn btn-danger">D</button>
-                <button type="button" class="btn btn-success" id = "add-comment" onclick = "addComment()">Comment</button>
-                <button type="button" class="btn btn-warning" id = "add-comment" onclick = "viewComments()">View Comments</button>
-              </div>
-              <div class = "listing-post">
-                <h6 class = "listing-name">Most resilient crop to cold weather?</h6>
-                <h6>User: Ben98</h6>
-                <h6>Upvotes: 5</h6>
-                <h6>Downvotes: 0</h6>
-                <button type="button" class="btn btn-primary">U</button>
-                <button type="button" class="btn btn-danger">D</button>
-                <button type="button" class="btn btn-success" id = "add-comment" onclick = "addComment()">Comment</button>
-                <button type="button" class="btn btn-warning" id = "add-comment" onclick = "viewComments()">View Comments</button>
-              </div>
-              <div class = "listing-post">
-                <h6 class = "listing-name">Farmer's water use by state?</h6>
-                <h6>User: Jon65</h6>
-                <h6>Upvotes: 8</h6>
-                <h6>Downvotes: 4</h6>
-                <button type="button" class="btn btn-primary">U</button>
-                <button type="button" class="btn btn-danger">D</button>
-                <button type="button" class="btn btn-success" id = "add-comment" onclick = "addComment()">Comment</button>
-                <button type="button" class="btn btn-warning" id = "add-comment" onclick = "viewComments()">View Comments</button>
-              </div>
-              <div class = "listing-post">
-                <h6 class = "listing-name">Best climate for almonds?</h6>
-                <h6>User: Test31</h6>
-                <h6>Upvotes: 11</h6>
-                <h6>Downvotes: 4</h6>
-                <button type="button" class="btn btn-primary">U</button>
-                <button type="button" class="btn btn-danger">D</button>
-                <button type="button" class="btn btn-success" id = "add-comment" onclick = "addComment()">Comment</button>
-                <button type="button" class="btn btn-warning" id = "add-comment" onclick = "viewComments()">View Comments</button>
-              </div>
             </div>
           </div>
           <div class="col-sm" id = "menu-heading2">
@@ -174,7 +104,7 @@
           <h6> Post Title:</h6>
           <input type = "text">
           <br>
-          <button type="button" class="btn btn-success" onclick = "closeCreatePost()" id = "add-comment">Create Post</button>
+          <button type="button" class="btn btn-success" onclick = "makePost()" id = "add-comment">Create Post</button>
         </div>
       
       </div>
@@ -206,6 +136,76 @@
       </footer>
 
       <script type = "text/javascript">
+
+        async function getCommentData() {
+          let result;
+          const res = await fetch("http://localhost:3000/forum/getSampleCommentData", {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+          let data = await res.json();
+          return data;
+        }
+
+        window.onload = async () => {
+          let newDiv;
+          let newTitle;
+          let newUser;
+          let newUpv;
+          let newDownv;
+          let upvButton;
+          let downvButton;
+          let addCommentButton;
+          let viewCommentButton;
+
+          for (let i = 0; i < 10; ++i) {
+            const values = await getCommentData();
+
+            newDiv = document.createElement("div");
+            newTitle = document.createElement("h6");
+            newUser = document.createElement("h6");
+            newUpv = document.createElement("h6");
+            newDownv = document.createElement("h6");
+            upvButton = document.createElement("button");
+            downvButton = document.createElement("button");
+            addCommentButton = document.createElement("button");
+            viewCommentButton = document.createElement("button");
+            newDiv.className = "listing-post";
+            newDiv.id = `listing-post${i + 1}`;
+            newTitle.innerHTML = values.commentTitle;
+            newUser.innerHTML = "User: " + values.user;
+            newUpv.innerHTML = "Upvotes: " + values.upvotes;
+            newDownv.innerHTML = "Downvotes: " + values.downvotes;
+            upvButton.className = "btn btn-primary";
+            upvButton.id = `upvote-button${i + 1}`;
+            upvButton.innerHTML = "U";
+            downvButton.className = "btn btn-danger";
+            downvButton.id = `downvote-button${i + 1}`;
+            downvButton.innerHTML = "D";
+            addCommentButton.className = "btn btn-success";
+            addCommentButton.id = `add-comment${i + 1}`;
+            addCommentButton.innerHTML = "Comment";
+            addCommentButton.onclick = function() {addComment()};
+            viewCommentButton.className = "btn btn-warning";
+            viewCommentButton.id = `view-comment${i + 1}`;
+            viewCommentButton.innerHTML = "View Comments";
+            viewCommentButton.onclick = function() {viewComments()};
+
+            newDiv.appendChild(newTitle);
+            newDiv.appendChild(newUser);
+            newDiv.appendChild(newUpv);
+            newDiv.appendChild(newDownv);
+            newDiv.appendChild(upvButton);
+            newDiv.appendChild(downvButton);
+            newDiv.appendChild(addCommentButton);
+            newDiv.appendChild(viewCommentButton);
+            document.getElementById("listing-scrolling").appendChild(newDiv);
+          }
+        };
+
         let postModal = document.getElementById("post-comment");
         let viewModal = document.getElementById("view-comments");
         let createPostModal = document.getElementById("create-post-modal");
@@ -270,7 +270,7 @@
           createPostModal.style.display = "block";
         }
 
-        function closeCreatePost() {
+        function makePost() {
           createPostModal.style.display = "none";
         }
 

@@ -75,7 +75,17 @@
           let zipCode = document.getElementById("zip").value;
           let region = document.getElementById("region").value;
           let dataObj = {"zip": zipCode, "region": region};
-          console.log(dataObj);
+          const res = await fetch("http://localhost:3000/crops/getCropWeatherData", {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(dataObj)
+          });
+          const allData = await res.json(); 
+          document.getElementById("weather-box").value = allData.weatherData;
+          document.getElementById("crop-box").value = allData.cropData;
         }
       </script>
   </body>
