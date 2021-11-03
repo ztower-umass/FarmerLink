@@ -106,8 +106,38 @@ app.post('/crops/getCropWeatherData', (req, res) => {
   res.send(JSON.stringify(respJSON));
 });
 
-//Add your endpoints here
+//Add your endpoints here vidya
+app.get('/user/getUserData', (req, res) => {
+  res.set(headers);
+let data = req.body;
+  let respJSON = {"userid": "BillClinton","password": "Hillary", "fname": "Bill", "lname": "Clinton"};
+  respJSON.interests = [{"interest" : "potato"} , {"interest" : "potato"}, {"interest" : "potato"}];
+  res.send(JSON.stringify(respJSON));
+});
 
+app.post('/users/getUserDetail', (req, res) => {
+  res.set(headers);
+  // Use request body appropriately when implementing full back-end functionality
+  let data = req.body;
+  console.log("Here userid " + data.userid);
+  console.log("Here password "+data.password);
+  console.log("Here fname "+data.fname);
+  console.log("Here lname "+data.lname);
+  console.log("Here zip "+data.zip);
+  console.log("Here birthday "+data.dob);
+  console.log("Here email "+data.email);
+  console.log("Here phone "+data.phone);  
+  console.log("Here interested "+data.interested);
+  console.log("Here grown "+data.grown);
+  
+  let respJSON = {"fname": "", "lname": "", "interests" : ""};
+ // respJSON.fname = "Bill";
+ // respJSON.lname = "Clinton";
+ // respJSON.interests = "apples,grapes,cauliflower";
+  res.send(JSON.stringify(respJSON));
+});
+
+//
 app.listen(port, () =>
   console.log('FarmerLink Backend Listening on port 3000'),
 );
