@@ -14,9 +14,10 @@ const headers = {
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use('/', express.static('../client'));
 
-//Try sending a request to http://localhost:3000/ to test if app is working
-app.get('/', (req, res) => {
+//Try sending a request to http://localhost:3000/test to test if app is working
+app.get('/test', (req, res) => {
     res.set(headers);
     res.send('API running');
 });
