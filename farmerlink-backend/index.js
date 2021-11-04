@@ -106,7 +106,7 @@ app.post('/crops/getCropWeatherData', (req, res) => {
   res.send(JSON.stringify(respJSON));
 });
 
-//Add your endpoints here vidya
+//Add your endpoints addUserDetail vidya
 app.get('/user/getUserData', (req, res) => {
   res.set(headers);
 let data = req.body;
@@ -119,21 +119,50 @@ app.post('/users/getUserDetail', (req, res) => {
   res.set(headers);
   // Use request body appropriately when implementing full back-end functionality
   let data = req.body;
-  console.log("Here userid " + data.userid);
-  console.log("Here password "+data.password);
-  console.log("Here fname "+data.fname);
-  console.log("Here lname "+data.lname);
-  console.log("Here zip "+data.zip);
-  console.log("Here birthday "+data.dob);
-  console.log("Here email "+data.email);
-  console.log("Here phone "+data.phone);  
-  console.log("Here interested "+data.interested);
-  console.log("Here grown "+data.grown);
+  console.log("addUserDetail userid " + data.userid);
+  console.log("addUserDetail password "+data.password);
+  console.log("addUserDetail fname "+data.fname);
+  console.log("addUserDetail lname "+data.lname);
+  console.log("addUserDetail zip "+data.zip);
+  console.log("addUserDetail birthday "+data.dob);
+  console.log("addUserDetail email "+data.email);
+  console.log("addUserDetail phone "+data.phone);  
+  console.log("addUserDetail interested "+data.interested);
+  console.log("addUserDetail grown "+data.grown);
   
   let respJSON = {"fname": "", "lname": "", "interests" : ""};
  // respJSON.fname = "Bill";
  // respJSON.lname = "Clinton";
  // respJSON.interests = "apples,grapes,cauliflower";
+  res.send(JSON.stringify(respJSON));
+});
+
+
+app.post('/users/addUserDetail', (req, res) => {
+  console.log("inside addUserDetail");
+  res.set(headers);
+  // Use request body appropriately when implementing full back-end functionality
+  let data = req.body;
+  console.log("addUserDetail userid " + data.userid);
+  console.log("addUserDetail password "+data.password);
+  console.log("addUserDetail fname "+data.fname);
+  console.log("addUserDetail lname "+data.lname);
+  console.log("addUserDetail zip "+data.zip);
+  console.log("addUserDetail birthday "+data.dob);
+  console.log("addUserDetail email "+data.email);
+  console.log("addUserDetail phone "+data.phone);  
+  console.log("addUserDetail interested "+data.interested);
+  console.log("addUserDetail grown "+data.grown);
+  
+  let respJSON = {"userid": "", "message": ""};
+  respJSON.userid = data.userid;
+  if (data.userid === "dupe") {
+    respJSON.message = "Sorry. Please pick a different User id.";	  
+  }
+  else {
+	respJSON.message = "Success! User " + data.userid +" added";
+	
+  }
   res.send(JSON.stringify(respJSON));
 });
 

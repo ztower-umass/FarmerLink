@@ -115,6 +115,66 @@ async function getUser() {
 	  //alert("Post Created");
   }
 }
+/*
+'{"userid":"' + useridVal+'"' +", "+
+                  ' "password":'+'"' +passwordVal+'"'+", " +
+				   '"fname":'+'"' +fnameVal+'"'+", "+
+				   '"lname":'+'"' +lnameVal+'"'+", "+
+				   '"zip":'+'"' +zipVal+'"'+", "+
+				   '"dob":'+'"' +dobVal+'"'+", "+
+				   '"email":'+'"' +emailVal+'"'+", "+
+				   '"phone":'+'"' +phoneVal+'"'+", "+
+				   '"grown":'+'"' +grownCsv+'"'+", "+
+				   '"interested":'+'"' +intrCsv+'"'+
+				   '}';
+*/
+
+async function addUser() {
+  //createPostModal.style.display = "none";
+  
+  let formStr = getFormData();
+  let jsonForm = JSON.parse(formStr);
+  let errorStr = "";
+  if (jsonForm.userid === "") {
+	  errorStr = "UserID required \n";
+  }
+  if (jsonForm.password === "") {
+	  errorStr = errorStr+ "Password required \n";
+  }
+  if (jsonForm.fname === "") {
+	  errorStr = errorStr+"First name required \n";
+	  const formUID = document.getElementById("fname");
+  }
+    if (jsonForm.zip === "") {
+	  errorStr = errorStr+ "Zip Code required \n";
+  }  
+  if (errorStr !== "") {
+	  alert("Error: "+errorStr);
+  }
+  if (jsonForm.userid === "" || jsonForm.password === "" || jsonForm.fname === ""|| jsonForm.lname === ""|| 
+      jsonForm.zip === "") {
+	  //alert("Error: username, password, first name, last name, zip, and email are all required");
+  } 
+  else
+  {
+	  let inDataStr = formStr;
+	  console.log(inDataStr);
+	  let inData    = JSON.parse(inDataStr);
+	  const res = await fetch("http://localhost:3000/users/addUserDetail", {
+		method: 'POST',
+		mode: 'cors',
+		headers: {
+		  'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(inData) 
+	  });
+	  let data = await res.json();
+	  console.log("In Searchuser " + data.fname);
+	  alert(data.message);
+		
+	  //alert("Post Created");
+  }
+}
 
 async function modifyUser() {
   //createPostModal.style.display = "none";
