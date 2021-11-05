@@ -167,6 +167,19 @@ app.post('/users/addUserDetail', (req, res) => {
   res.send(JSON.stringify(respJSON));
 });
 
+app.post('/users/searchUserDetail', (req, res) => {
+  res.set(headers);
+  let data = req.body;
+  console.log("Here " + data.userid);
+  
+  let respJSON = {matchrows : 0,results : []};
+  respJSON.results[0] = ["bobama","Barack","Obama","02111","obama@ob.com","123-444-2255","Mangoes,Plums","Cherry,Tomato"];
+  respJSON.results[1] = ["obama","Barack","Obama","02111","obama@ob.com","123-444-2255","Potato,Plums","Lemon,Tomato"];
+  respJSON.results[2] = ["gbush","George","Bush","02111","obama@ob.com","123-444-2255","Mangoes,Lime","Cherry,Peas"];
+  respJSON.matchrows = 3;
+  res.send(JSON.stringify(respJSON));
+});
+
 //
 app.listen(port, () =>
   console.log('FarmerLink Backend Listening on port 3000'),
