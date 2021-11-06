@@ -13,6 +13,26 @@
     color: black;
 }
 
+#srchProfile {
+    background-color: greenyellow;
+    color: black;	
+}
+
+#addProfile {
+	background-color: black;
+    color: greenyellow;	
+}
+
+#getProfile {
+	background-color: black;
+    color: greenyellow;	
+}
+
+#modProfile {
+	background-color: black;
+    color: greenyellow;	
+}
+
 #main-footer {
     position: fixed;
     bottom: 0;
@@ -37,4 +57,8 @@
   width: 100%;
   text-align: center;
   position: relative;
+}
+
+#removeItemButton {
+  color: red	
 }
