@@ -245,7 +245,38 @@ app.post('/users/searchUserDetail', (req, res) => {
   res.send(JSON.stringify(respJSON));
 });
 
+// Heroku mod start
+if (request.url.endsWith("/index.html")) {
+  fs.readFile('static/pcrud-interactive.html', null, function (error, data) {
+    if (error) {
+      response.writeHead(404);
+      response.write('Whoops! File not found!');
+    } else {
+      response.writeHead(200, {
+        "Content-Type": "text/html"
+      });
+      response.write(data);
+    }
+    response.end();
+  });
+  return;
+} else if (request.url.endsWith("/pcrud-xhr.js")) {
+  fs.readFile('static/pcrud-xhr.js', null, function (error, data) {
+    if (error) {
+      response.writeHead(404);
+      response.write('Whoops! File not found!');
+    } else {
+      response.writeHead(200, {
+        "Content-Type": "text/javascript"
+      });
+      response.write(data);
+    }
+    response.end();
+  });
+  return;
+}
+// Heroku mod ends
 
-app.listen(port, () => {
-  console.log('FarmerLink Backend Listening on port 3000');
-})
+
+app.listen(process.env.PORT);
+
