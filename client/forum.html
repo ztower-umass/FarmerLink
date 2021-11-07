@@ -121,7 +121,7 @@
         let max = 0;
 
         async function getPostData() {
-          const res = await fetch("http://localhost:3000/forum/getPostData", {
+          const res = await fetch("/forum/getPostData", {
             method: 'GET',
             mode: 'cors',
             headers: {
@@ -263,7 +263,7 @@
         async function postComment() {
           postModal.style.display = "none";
           let comment = document.getElementById("new-comment-text").value;
-          const res = await fetch("http://localhost:3000/forum/addComment", {
+          const res = await fetch("/forum/addComment", {
             method: 'POST',
             mode: 'cors',
             headers: {
@@ -277,7 +277,7 @@
         async function viewComments() {
           document.getElementById("inner-comment-modal").innerHTML = "";
           viewModal.style.display = "block";
-          const res = await fetch("http://localhost:3000/forum/getCommentforPost", {
+          const res = await fetch("/forum/getCommentforPost", {
             method: 'POST',
             mode: 'cors',
             headers: {
@@ -316,7 +316,7 @@
         async function makePost() {
           createPostModal.style.display = "none";
           postCreation(max, document.getElementById("new-post-title").value, "You");
-          const res = await fetch("http://localhost:3000/forum/makePost", {
+          const res = await fetch("/forum/makePost", {
             method: 'POST',
             mode: 'cors',
             headers: {
@@ -328,7 +328,7 @@
         }
 
         async function getMyPosts() {
-          const res = await fetch("http://localhost:3000/forum/myPosts", {
+          const res = await fetch("/forum/myPosts", {
             method: 'POST',
             mode: 'cors',
             headers: {
@@ -357,7 +357,7 @@
           let text = document.getElementById(id).querySelector(".upvote-data").innerHTML;
           text = parseInt(text.split(" ")[1]) + 1;
           document.getElementById(id).querySelector(".upvote-data").innerHTML = "Upvotes: " + text.toString();
-          const res = await fetch("http://localhost:3000/forum/upvote", {
+          const res = await fetch("/forum/upvote", {
             method: 'POST',
             mode: 'cors',
             headers: {
@@ -371,7 +371,7 @@
           let text = document.getElementById(id).querySelector(".downvote-data").innerHTML;
           text = parseInt(text.split(" ")[1]) + 1;
           document.getElementById(id).querySelector(".downvote-data").innerHTML = "Downvotes: " + text.toString();
-          const res = await fetch("http://localhost:3000/forum/downvote", {
+          const res = await fetch("/forum/downvote", {
             method: 'POST',
             mode: 'cors',
             headers: {
