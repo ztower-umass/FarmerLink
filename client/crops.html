@@ -78,7 +78,7 @@
           let zipCode = document.getElementById("zip").value;
           let region = document.getElementById("region").value;
           let dataObj = {"zip": zipCode, "region": region};
-          const res = await fetch("http://localhost:3000/crops/getCropWeatherData", {
+          const res = await fetch("/crops/getCropWeatherData", {
             method: 'POST',
             mode: 'cors',
             headers: {
