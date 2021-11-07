@@ -1,4 +1,4 @@
-# Milestone 2: FamerLink
+# Milestone 2: FarmerLink
 
 # URL: TODO
 
