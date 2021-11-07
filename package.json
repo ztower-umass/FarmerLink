@@ -1,16 +1,31 @@
 {
-    "name": "farmerlink-backend",
-    "version": "1.0.0",
-    "description": "",
-    "main": "farmerlink-backend/index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "author": "",
-    "license": "ISC",
-    "dependencies": {
-        "cors": "^2.8.5",
-        "express": "^4.17.1",
-        "faker": "^5.5.3"
-    }
+  "name": "farmerlink-backend",
+  "version": "1.0.0",
+  "description": "hello",
+  "main": "farmerlink-backend/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "zach vidya sid",
+  "license": "SEE LICENSE IN lol.txt",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "faker": "^5.5.3"
+  },
+  "directories": {
+    "doc": "docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ztower-umass/FarmerLink.git"
+  },
+  "keywords": [
+    "farmer",
+    "link"
+  ],
+  "bugs": {
+    "url": "https://github.com/ztower-umass/FarmerLink/issues"
+  },
+  "homepage": "https://github.com/ztower-umass/FarmerLink#readme"
 }
