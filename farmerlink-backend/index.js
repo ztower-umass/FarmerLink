@@ -167,6 +167,41 @@ app.post('/users/addUserDetail', (req, res) => {
   res.send(JSON.stringify(respJSON));
 });
 
+app.post('/listings/addListing', (req, res) => {
+  res.set(headers);
+  let data = req.body;
+  console.log(req.bodd)
+  console.log("addListing name" + data.name);
+  console.log("addListing location" + data.location);
+  console.log("addListing details" + data.details);
+  console.log("addListing contact" + data.contact);
+
+  let respJSON = {"name" : "", "message" : ""};
+  if (data.name === "dupe") {
+    respJSON["message"] = "That name is not allowed.";
+  } else {
+    respJSON["message"] = "Success! Listing added under name " + data.name + ".";
+  }
+  res.send(JSON.stringify(respJSON));
+});
+
+app.get('/listings/getListings', (req, res) => {
+  let data = req.body;
+  n_entries = 3;
+  let respList = [];
+  res.set(headers);
+  for(let i = 0; i < n_entries; i++) {
+    let singleEntry = { "name": "", "location": "", "details": 0, "contact": 0 }
+    singleEntry.name = faker.name.firstName() + " " + faker.name.lastName();
+    singleEntry.location = faker.address.zipCode();
+    singleEntry.details = faker.lorem.sentence();
+    singleEntry.contact = faker.internet.email();
+    respList.push(singleEntry);
+  }
+  
+  res.send(JSON.stringify(respList));
+});
+
 //
 app.listen(port, () =>
   console.log('FarmerLink Backend Listening on port 3000'),

@@ -45,32 +45,37 @@
         <h2 id="sub-page-heading">Check out local listings in your area!</h1>
     </div>
     
-
+    
     <div class="row container-fluid">
         <div class="col-4 themed-grid-col"><strong>Name</strong></div>
         <div class="col-4-long themed-grid-col"><strong>Location</strong></div>
         <div class="col-4-long themed-grid-col"><strong>Details</strong></div>
         <div class="col-4-long themed-grid-col"><strong>Contact</strong></div>
     </div>
-    <div class="row container-fluid">
-        <div class="col-4 themed-grid-col">Sample name 1</div>
-        <div class="col-4-long themed-grid-col">Sample location 1</div>
-        <div class="col-4-long themed-grid-col">Sample details1</div>
-        <div class="col-4-long themed-grid-col">Sample contact 1</div>
-    </div><div class="row container-fluid">
-        <div class="col-4 themed-grid-col">Sample name 2</div>
-        <div class="col-4-long themed-grid-col">Sample location 2</div>
-        <div class="col-4-long themed-grid-col">Sample details 2</div>
-        <div class="col-4-long themed-grid-col">Sample contact 2</div>
-    </div><div class="row container-fluid">
-        <div class="col-4 themed-grid-col">Sample name 3</div>
-        <div class="col-4-long themed-grid-col">Sample location 3</div>
-        <div class="col-4-long themed-grid-col">Sample details 3</div>
-        <div class="col-4-long themed-grid-col">Sample contact 3</div>
+    <div id="listings">
+        <div class="row container-fluid">
+            <div class="col-4 themed-grid-col">Sample name 1</div>
+            <div class="col-4-long themed-grid-col">Sample location 1</div>
+            <div class="col-4-long themed-grid-col">Sample details1</div>
+            <div class="col-4-long themed-grid-col">Sample contact 1</div>
+        </div>
+        <div class="row container-fluid">
+            <div class="col-4 themed-grid-col">Sample name 2</div>
+            <div class="col-4-long themed-grid-col">Sample location 2</div>
+            <div class="col-4-long themed-grid-col">Sample details 2</div>
+            <div class="col-4-long themed-grid-col">Sample contact 2</div>
+        </div>
+        <div class="row container-fluid">
+            <div class="col-4 themed-grid-col">Sample name 3</div>
+            <div class="col-4-long themed-grid-col">Sample location 3</div>
+            <div class="col-4-long themed-grid-col">Sample details 3</div>
+            <div class="col-4-long themed-grid-col">Sample contact 3</div>
+        </div>
     </div>
+    
 
     <div class="container-fluid centered" id="submit-button-div">
-        <button type="button" class="btn btn-success">Refresh</button>
+        <button type="button" class="btn btn-success" id="refreshBtn">Refresh</button>
     </div>
 
     <footer class="footer mt-auto py-3 bg-dark" id="main-footer">
@@ -80,6 +85,63 @@
             </ul>
         </div>
     </footer>
+    <script type = "text/javascript">
+        let refreshButtonObj = document.getElementById("refreshBtn");
+        async function refreshButton() {
+            
+            
+            let n = 3;
+            let res = await fetch("http://localhost:3000/listings/getListings", {
+                method: 'GET',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json'
+                }});
+            
+            let data = await res.json();
+            console.log(data);
+            let outerDiv = document.getElementById('listings');
+            outerDiv.innerHTML = '';
+
+            for(let i = 0; i < n; i++) {
+                let rowDiv = document.createElement("div");
+                rowDiv.classList.add('row');
+                rowDiv.classList.add('container-fluid');
+
+                let currRow = data[i];
+                console.log(currRow);
+                let nameDiv = document.createElement("div");
+                let locationDiv = document.createElement("div");
+                let detailsDiv = document.createElement("div");
+                let contactDiv = document.createElement("div");
+
+                nameDiv.classList.add("col-4");
+                nameDiv.classList.add("themed-grid-col");
+                locationDiv.classList.add("col-4-long");
+                locationDiv.classList.add("themed-grid-col");
+
+                detailsDiv.classList.add("col-4-long");
+                detailsDiv.classList.add("themed-grid-col");
+
+                contactDiv.classList.add("col-4-long");
+                contactDiv.classList.add("themed-grid-col");
+
+                nameDiv.innerHTML = currRow.name;
+                locationDiv.innerHTML = currRow.location;
+                detailsDiv.innerHTML = currRow.details;
+                contactDiv.innerHTML = currRow.contact;
+
+                rowDiv.appendChild(nameDiv);
+                rowDiv.appendChild(locationDiv);
+                rowDiv.appendChild(detailsDiv);
+                rowDiv.appendChild(contactDiv);
+
+                outerDiv.appendChild(rowDiv);
+            }
+
+        }
+        refreshButtonObj.onclick = () => {refreshButton();};
+    </script>
 </body>
 
 </html>
