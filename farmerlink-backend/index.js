@@ -120,27 +120,27 @@ app.post('/users/getUserDetail', (req, res) => {
   res.set(headers);
   // Use request body appropriately when implementing full back-end functionality
   let data = req.body;
-  console.log("addUserDetail userid " + data.userid);
-  console.log("addUserDetail password "+data.password);
-  console.log("addUserDetail fname "+data.fname);
-  console.log("addUserDetail lname "+data.lname);
-  console.log("addUserDetail zip "+data.zip);
-  console.log("addUserDetail birthday "+data.dob);
-  console.log("addUserDetail email "+data.email);
-  console.log("addUserDetail phone "+data.phone);  
-  console.log("addUserDetail interested "+data.interested);
-  console.log("addUserDetail grown "+data.grown);
+  console.log("getUserDetail userid " + data.userid);
+  console.log("modifyUserDetail password "+data.password);
+  console.log("modifyUserDetail fname "+data.fname);
+  console.log("modifyUserDetail lname "+data.lname);
+  console.log("modifyUserDetail zip "+data.zip);
+  console.log("modifyUserDetail birthday "+data.dob);
+  console.log("modifyUserDetail email "+data.email);
+  console.log("modifyUserDetail phone "+data.phone);  
+  console.log("modifyUserDetail interested "+data.interested);
+  console.log("modifyUserDetail grown "+data.grown);
   
   let respJSON = {"fname": "", "lname": "", "interests" : ""};
  // respJSON.fname = "Bill";
  // respJSON.lname = "Clinton";
- // respJSON.interests = "apples,grapes,cauliflower";
+  //respJSON.interests = "apples,grapes,cauliflower";
   res.send(JSON.stringify(respJSON));
 });
 
 
 app.post('/users/addUserDetail', (req, res) => {
-  console.log("inside addUserDetail");
+  console.log("inside modifyUserDetail");
   res.set(headers);
   // Use request body appropriately when implementing full back-end functionality
   let data = req.body;
@@ -182,6 +182,33 @@ app.post('/listings/addListing', (req, res) => {
   } else {
     respJSON["message"] = "Success! Listing added under name " + data.name + ".";
   }
+});
+
+app.post('/users/modifyUserDetail', (req, res) => {
+  console.log("modify modifyUserDetail");
+  res.set(headers);
+  // Use request body appropriately when implementing full back-end functionality
+  let data = req.body;
+  console.log("modifyUserDetail userid " + data.userid);
+  console.log("modifyUserDetail password "+data.password);
+  console.log("modifyUserDetail fname "+data.fname);
+  console.log("modifyUserDetail lname "+data.lname);
+  console.log("modifyUserDetail zip "+data.zip);
+  console.log("modifyUserDetail birthday "+data.dob);
+  console.log("modifyUserDetail email "+data.email);
+  console.log("modifyUserDetail phone "+data.phone);  
+  console.log("modifyUserDetail interested "+data.interested);
+  console.log("modifyUserDetail grown "+data.grown);
+  
+  let respJSON = {"userid": "", "message": ""};
+  respJSON.userid = data.userid;
+  if (data.userid === "none") {
+    respJSON.message = "Sorry. Invalid modification.";	  
+  }
+  else {
+	respJSON.message = "Success! User " + data.userid +" modified";
+	
+  }
   res.send(JSON.stringify(respJSON));
 });
 
@@ -203,6 +230,22 @@ app.get('/listings/getListings', (req, res) => {
 });
 
 //
-app.listen(port, () =>
-  console.log('FarmerLink Backend Listening on port 3000'),
-);
+app.post('/users/searchUserDetail', (req, res) => {
+  res.set(headers);
+  let data = req.body;
+  console.log("Here " + data.userid);
+  
+  let respJSON = {matchrows : 0,results : []};
+  
+  respJSON.results[0] = ["bobama","Barack","Obama","02111","obama@ob.com","123-444-2255","Mangoes,Plums","Cherry,Tomato"];
+  respJSON.results[1] = ["obama","Barack","Obama","02111","obama@ob.com","123-444-2255","Potato,Plums","Lemon,Tomato"];
+  respJSON.results[2] = ["gbush","George","Bush","02111","obama@ob.com","123-444-2255","Mangoes,Lime","Cherry,Peas"];
+  respJSON.results[3] = ["jcarter","Jimmy","Carter","02111","jc@gm.com","123-444-2255","Mangoes,Lime","Cherry,Peas"];
+  respJSON.matchrows = respJSON.results.length;
+  res.send(JSON.stringify(respJSON));
+});
+
+
+app.listen(port, () => {
+  console.log('FarmerLink Backend Listening on port 3000');
+})

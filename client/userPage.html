@@ -1,6 +1,6 @@
-<!---TODO: Sid --->
 <!doctype html>
 <html lang="en">
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -22,16 +22,15 @@
               <li><a href="crops.html" class="nav-link px-2 text-white">Crops</a></li>
               <li><a href="listings.html" class="nav-link px-2 text-white">Listings</a></li>
               <li><a href="forum.html" class="nav-link px-2 text-white">Forum</a></li>
+			  <li><a href="search.html" class="nav-link px-2 text-white">Search</a></li>
             </ul>
     
             <div class="text-end">
-                 <a href="userPage.html" button type="button" class="btn btn-light" id = "profile-button">My Profile</a>
+                 <a href="search.html" button type="button" class="btn btn-light" id = "profile-button">Search Profile</a>
             </div>
           </div>
         </div>
-      </header>
-
-      
+      </header>   
       <div class="container-fluid" id = "main-page-name">
         <h2 id = "main-page-heading">My Profile</h1>
       </div>
@@ -39,23 +38,204 @@
 		<p style = "text-align: center;">
             <div class="d-flex"><img class = "photoFit" width="100px" src="PngItem_248235.png" style = "text-align: center;" style = "margin-left:auto margin-right:auto;"></div>
 			</p>
-			<a href="search.html" button type="button" class="btn btn-light" id = "profile-button">Add Friends</a>
+			</p>
 		</div>
-		<div style: "overflow-x: scroll;">
-					<div class="col-md-10"><label class="font-weight-normal">Full Name: </label><input class="form-control"></div>
-					<div class="col-md-10"><label class="font-weight-normal">Birthday: </label><input class="form-control"></div>
-					<div class="col-md-10"><label class="font-weight-normal">Area: </label><input class="form-control"></div>
-                                        <div class="col-md-10"><label class="font-weight-normal">Interested In: </label><input class="form-control"></div>
-					<div class="col-md-10"><label class="font-weight-normal">Specialty: </label><input class="form-control"></div>
-                                        <div class="col-md-10"><label class="font-weight-normal">Email: </label><input class="form-control"></div>
-					<div class="col-md-10"><label class="font-weight-normal">Phone Number: </label><input class="form-control"></div>
-					</div>
-                </div>
-        <div class="text-center p-3" id = "about-footer">
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="#" class="nav-link px-2 text-white" id = "footer-text">About</a></li>
-            </ul>
-          </div>
-      </footer>
-  </body>
-</html>
+<form class = 'card p-1 form-horizontal' role="form">
+  <div class="row form-group">
+<div class="col" >
+<button type="button" class="btn btn-outline-dark" id="addProfile" onclick = "addUser()" >Sign Up</button>
+</div>
+<div class="col" >
+<button type="button" class="btn btn-outline-dark" id="getProfile" onclick = "getUser()" >View Profile</button>
+</div>
+<div class="col" >
+<button type="button" class="btn btn-outline-dark" id="modProfile" onclick = "modifyUser()">Change Profile</button>
+</div>
+<p></p>
+<div class="col" >
+<!--<button type="button" class="btn btn-outline-dark" id="srchProfile" onclick = "searchUser()">Search Profile</button>-->
+</div>
+</div>
+</div>
+<div class="container justify-content-start">
+  <div class="row">
+    <div class="col">
+	<label for = "userid" class="font-weight-normal" >UserID :</label>
+      <input type="text" class="form-control, col-md-12" placeholder="UserID" id="userid">
+    </div>
+    <div class="col">
+	  <label for = "password" class="font-weight-normal" >Password: </label>
+      <input type="password" class="form-control, col-md-12" placeholder="Password" id='password'>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+	<label for = "fname" class="font-weight-normal" >First Name: </label>
+      <input type="text" class="form-control, col-md-12" placeholder="First name" id="fname">
+    </div>
+    <div class="col">
+	  <label for = "lname" class="font-weight-normal" >Last Name: </label>
+      <input type="text" class="form-control, col-md-12" placeholder="Last name" id='lname'>
+    </div>
+    </div>
+	<div class="row">
+    <div class="col">
+	  <label for = "zip" class="font-weight-normal" >Zip Code: </label>
+      <input type="text" class="form-control, col-md-12"  id="zip" >
+    </div>
+	<div class="col">
+	  <label for = "dob" class="font-weight-normal" >Date of Birth: </label>
+      <input type="date" class="form-control, col-md-12" placeholder="MM/DD/YYYY" id='dob'>   
+    </div> 
+    </div>
+	<div class="row">
+    <div class="col">
+	<label for = "email" class="font-weight-normal" >Email </label>
+      <input type="text" class="form-control, col-md-12" placeholder="email" id="email">
+    </div>
+	<div class="col">
+	  <label for = "phone" class="font-weight-normal" >Phone: </label>
+      <input type="text" class="form-control, col-md-12" placeholder="Phone" id='phone'>  
+    </div> 
+    </div>
+  </div>
+  <p> </p>
+  
+ <!--   Start of Switches -->
+<div class="p-1 mb-1 bg-primary text-white">Interests</div>
+<div class="row">
+<div class="col">
+<div class="form-check form-switch">
+  <input class="form-check-input" type="checkbox" id="citrusSw">
+  <label class="citrusSw" for="flexSwitchCheckDefault">Citrus</label>
+</div>
+</div>
+<div class="col">
+<div class="form-check form-switch">
+  <input class="form-check-input" type="checkbox" id="livestockSw">
+  <label class="livestockSw" for="flexSwitchCheckDefault">Livestock</label>
+</div>
+</div>
+<div class="col">
+<div class="form-check form-switch">
+  <input class="form-check-input" type="checkbox" id="wheatSw">
+  <label class="wheatSw" for="flexSwitchCheckDefault">Wheat</label>
+</div>
+</div>
+<div class="col">
+<div class="form-check form-switch">
+  <input class="form-check-input" type="checkbox" id="grapesSw">
+  <label class="grapesSw" for="flexSwitchCheckDefault">Grapes</label>
+</div>
+</div>
+<div class="col">
+<div class="form-check form-switch">
+  <input class="form-check-input" type="checkbox" id="applesSw">
+  <label class="applesSw" for="flexSwitchCheckDefault">Apples</label>
+</div>
+</div>
+<div class="row">
+</div>
+<div class="col">
+<div class="form-check form-switch">
+  <input class="form-check-input" type="checkbox" id="bananaSw">
+  <label class="bananaSw" for="flexSwitchCheckDefault">Banana</label>
+</div>
+</div>
+<div class="col">
+<div class="form-check form-switch">
+  <input class="form-check-input" type="checkbox" id="strawberrySw">
+  <label class="strawberrySw" for="flexSwitchCheckDefault">Strawberries</label>
+</div>
+</div>
+<div class="col">
+<div class="form-check form-switch">
+  <input class="form-check-input" type="checkbox" id="cabbageSw">
+  <label class="cabbageSw" for="flexSwitchCheckDefault">Cabbage</label>
+</div>
+</div>
+<div class="col">
+<div class="form-check form-switch">
+  <input class="form-check-input" type="checkbox" id="cauliflowerSw">
+  <label class="cauliflowerSw" for="flexSwitchCheckDefault">Cauliflower</label>
+</div>
+</div>
+<div class="col">
+<div class="form-check form-switch">
+  <input class="form-check-input" type="checkbox" id="peasSw">
+  <label class="peasSw" for="flexSwitchCheckDefault">Peas</label>
+</div>
+</div>
+</div>
+<!-- End of Interests switches -->
+<div class="p-1 mb-1 bg-primary text-white">Currently Growing</div>
+<div class="row">
+<div class="col">
+<div class="form-check form-switch">
+  <input class="form-check-input" type="checkbox" id="citrusGrSw">
+  <label class="citrusGrSw" for="flexGrSwitchCheckDefault">Citrus</label>
+</div>
+</div>
+<div class="col">
+<div class="form-check form-switch">
+  <input class="form-check-input" type="checkbox" id="livestockGrSw">
+  <label class="livestockGrSw" for="flexGrSwitchCheckDefault">Livestock</label>
+</div>
+</div>
+<div class="col">
+<div class="form-check form-switch">
+  <input class="form-check-input" type="checkbox" id="wheatGrSw">
+  <label class="wheatGrSw" for="flexGrSwitchCheckDefault">Wheat</label>
+</div>
+</div>
+<div class="col">
+<div class="form-check form-switch">
+  <input class="form-check-input" type="checkbox" id="grapesGrSw">
+  <label class="grapesGrSw" for="flexGrSwitchCheckDefault">Grapes</label>
+</div>
+</div>
+<div class="col">
+<div class="form-check form-switch">
+  <input class="form-check-input" type="checkbox" id="applesGrSw">
+  <label class="applesGrSw" for="flexGrSwitchCheckDefault">Apples</label>
+</div>
+</div>
+<div class="row">
+</div>
+<div class="col">
+<div class="form-check form-switch">
+  <input class="form-check-input" type="checkbox" id="bananaGrSw">
+  <label class="bananaGrSw" for="flexGrSwitchCheckDefault">Banana</label>
+</div>
+</div>
+<div class="col">
+<div class="form-check form-switch">
+  <input class="form-check-input" type="checkbox" id="strawberryGrSw">
+  <label class="strawberryGrSw" for="flexGrSwitchCheckDefault">Strawberries</label>
+</div>
+</div>
+<div class="col">
+<div class="form-check form-switch">
+  <input class="form-check-input" type="checkbox" id="cabbageGrSw">
+  <label class="cabbageGrSw" for="flexSwitchCheckDefault">Cabbage</label>
+</div>
+</div>
+<div class="col">
+<div class="form-check form-switch">
+  <input class="form-check-input" type="checkbox" id="cauliflowerGrSw">
+  <label class="cauliflowerGr	Sw" for="flexSwitchCheckDefault">Cauliflower</label>
+</div>
+</div>
+<div class="col">
+<div class="form-check form-switch">
+  <input class="form-check-input" type="checkbox" id="peasGrSw">
+  <label class="peasSw" for="flexSwitchCheckDefault">Peas</label>
+</div>
+</div>
+</div>
+</div>
+<div class="p-1 mb-1 bg-primary text-white"> </div>
+</form>
+<script src="userData3.js"></script>
+</body>
+ 
