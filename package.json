@@ -4,7 +4,7 @@
   "description": "hello",
   "main": "farmerlink-backend/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "cd farmerlink-backend; node index.js"
   },
   "author": "zach vidya sid",
   "license": "SEE LICENSE IN lol.txt",
