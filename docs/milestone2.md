@@ -16,6 +16,7 @@
     * Implement JS APIs for each teammate’s own page
     * Collect screenshots for milestone2.md
 * Sid
+    * API Outline 
     * Forum and Thread API
     * Crop query
 * Vidya
