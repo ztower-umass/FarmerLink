@@ -246,6 +246,6 @@ app.post('/users/searchUserDetail', (req, res) => {
 });
 
 
-app.listen(port, () => {
+app.listen(process.env.PORT, () => {
   console.log('FarmerLink Backend Listening on port 3000');
 })
