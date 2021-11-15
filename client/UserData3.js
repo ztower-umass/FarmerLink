@@ -265,7 +265,6 @@ async function addUser() {
 		body: JSON.stringify(inData) 
 	  });
 	  let data = await res.json();
-	  console.log("In Searchuser " + data.fname);
 	  alert(data.message);
 		
 	  //alert("Post Created");
