@@ -126,7 +126,7 @@ function getFormDataSearch () {
 
 
 
-async function getUser() {
+/*async function getUser() {
   //createPostModal.style.display = "none";
   
   const formUID = document.getElementById("userid");
@@ -174,6 +174,7 @@ async function getUser() {
 	  //alert("Post Created");
   }
 }
+*/
 /*
 '{"userid":"' + useridVal+'"' +", "+
                   ' "password":'+'"' +passwordVal+'"'+", " +
@@ -187,6 +188,91 @@ async function getUser() {
 				   '"interested":'+'"' +intrCsv+'"'+
 				   '}';
 */
+async function getUsersdb(inData) {
+    try {
+        let res = await fetch("/users/getUserDetail", {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(inData)  
+      });
+         return await res.json();
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function getUser() {
+	//createPostModal.style.display = "none";
+	
+	const formUID = document.getElementById("userid");
+	let useridVal = formUID.value;
+	let passwordc = document.getElementById ("password");
+	let passwordVal = passwordc.value;  
+	if (useridVal === "" || passwordVal === "") {
+		alert("UserID and Password are mandatory");
+	}
+	else
+	{
+		let inDataStr = getFormData();
+		console.log(inDataStr);
+		let inData    = JSON.parse(inDataStr);
+		
+		let resp = await getUsersdb(inData);
+		let data = resp.results;
+		console.log("Here ->" + JSON.stringify(resp) + "  " + data.length);
+		console.log("Here2 ->" + JSON.stringify(data));
+		console.log("Here3 ->" + resp.message);
+		//set values retrieved from database.
+		if (resp.message == 'Success') {
+			  if (data.length === 1) {
+					  console.log("in 1" + JSON.stringify(data[0]));
+					  document.getElementById("lname").value = data[0].lname;
+					  document.getElementById("fname").value = data[0].fname;
+					  document.getElementById("zip").value = data[0].zip;
+					  document.getElementById("email").value = data[0].email;
+					  document.getElementById("dob").value = data[0].dob;
+					  document.getElementById("phone").value = data[0].phone;
+					  clearSw();
+					  interests = data[0].interests;
+					  console.log("Interests : " + interests);
+					  const interestArr = interests.split(",");
+					  console.log("Interests : " + interestArr.length);
+					  for (let i = 0; i < interestArr.length; i++) {
+						  swName = interestArr[i] + "Sw";
+						  console.log( i + "****" + interestArr[i] + swName);
+						  selSw = document.getElementById(swName);
+						  selSw.checked = true;
+					  }
+					  grown = data[0].grown;
+					  console.log("grown : " + grown);
+					  const grownArr = grown.split(",");
+					  console.log("growns : " + grownArr.length);
+					  for (let i = 0; i < grownArr.length; i++) {
+						  swName = grownArr[i] + "GrSw";
+						  console.log( i + "****" + grownArr[i] + swName);
+						  selSw = document.getElementById(swName);
+						  selSw.checked = true;
+					  }
+			  }
+			  else
+			  {   
+					  console.log("in not 1");
+					  document.getElementById("lname").value = "";
+					  document.getElementById("fname").value = "";
+					  document.getElementById("zip").value = "";
+					  document.getElementById("email").value = "";
+					  document.getElementById("phone").value = "";
+					  alert("Userid/Password combination does not exist");
+			  }
+		} else {
+			alert(resp.message);
+		}
+	}
+  }
+  
 
 async function addUser() {
   //createPostModal.style.display = "none";

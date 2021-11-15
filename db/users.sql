@@ -1,0 +1,13 @@
+DROP TABLE FARMERLINK_USERS;
+CREATE TABLE FARMERLINK_USERS(
+   USERID       VARCHAR(10) PRIMARY KEY     NOT NULL,
+   PASSWORD     VARCHAR(50)    NOT NULL,
+   FNAME    VARCHAR(50)    NOT NULL,
+   LNAME     VARCHAR(50)    NOT NULL,
+   ZIP      VARCHAR(10)    NOT NULL,
+   DOB          DATE,
+   EMAIL        VARCHAR(50),
+   PHONE        VARCHAR(20),
+   interests    varchar(1000),
+   grown        varchar(1000)
+);
