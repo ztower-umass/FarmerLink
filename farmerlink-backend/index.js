@@ -153,6 +153,50 @@ app.get('/listings/getListings', (req, res) => {
 
 //Add your endpoints addUserDetail vidya
 //User related end points start here-----------------------------------------------------
+app.post('/users/addUserDetail', async (req, res) => {
+  try {
+      let respJSON = {};
+      res.set(headers);
+    // Use request body appropriately when implementing full back-end functionality
+      let data = req.body;
+      const client = await pool.connect();
+      validUser = await validateUsers(client,data.userid);
+      console.log("valid adduserdetail" + JSON.stringify(validUser));
+      console.log("valid length " + validUser.results.length);
+      if (validUser.results.length !== 0) {
+        const results_null  = {results : []};
+        console.log("Userid exists");
+        respJSON = results_null 
+        respJSON.message = 'Userid Exists.  Please pick another userid';
+        res.send(JSON.stringify(respJSON));
+      } else {
+      // Assemble query
+      // let assembled_query = `SELECT fname,lname,zip,to_char(dob,'yyyy-mm-dd') as dob,email,phone,interests,grown FROM FARMERLINK_USERS where userid = '${data.userid}'`;
+        let assembled_query = `INSERT INTO FARMERLINK_USERS VALUES ('${data.userid}','${data.password}','${data.fname}','${data.lname}','${data.zip}',to_date('${data.dob}','YYYY-MM-DD'),
+                                                                    '${data.email}','${data.phone}','${data.interests}','${data.grown}')`
+        console.log("assembled query ->" + assembled_query)
+        const result = await client.query(assembled_query);
+        const results = { 'results': (result) ? result.rows : null};
+        console.log("Inside query -> " + JSON.stringify(results));
+        console.log("Inside query1");
+        client.release();
+        console.log("Inside query1");
+        respJSON = results;
+        console.log("Inside query afters -> " + JSON.stringify(respJSON));
+        //Send success message and results back
+        respJSON.message = 'Success.  User Added';
+        res.send(JSON.stringify(respJSON));
+      }
+} catch (err) {
+      console.error(err);
+      const results = { 'results': {}};
+      respJSON = results;
+      respJSON.message = "Database Error.  Please contact our helpline";
+      console.log("Error " + err);
+      res.send(JSON.stringify(respJSON));
+}
+});
+
 app.get('/user/getUserData', (req, res) => {
   res.set(headers);
 let data = req.body;
@@ -208,33 +252,7 @@ app.post('/users/getUserDetail', async (req, res) => {
 })
 
 
-app.post('/users/addUserDetail', (req, res) => {
-  console.log("inside modifyUserDetail");
-  res.set(headers);
-  // Use request body appropriately when implementing full back-end functionality
-  let data = req.body;
-  console.log("addUserDetail userid " + data.userid);
-  console.log("addUserDetail password "+data.password);
-  console.log("addUserDetail fname "+data.fname);
-  console.log("addUserDetail lname "+data.lname);
-  console.log("addUserDetail zip "+data.zip);
-  console.log("addUserDetail birthday "+data.dob);
-  console.log("addUserDetail email "+data.email);
-  console.log("addUserDetail phone "+data.phone);  
-  console.log("addUserDetail interested "+data.interested);
-  console.log("addUserDetail grown "+data.grown);
-  
-  let respJSON = {"userid": "", "message": ""};
-  respJSON.userid = data.userid;
-  if (data.userid === "dupe") {
-    respJSON.message = "Sorry. Please pick a different User id.";	  
-  }
-  else {
-	respJSON.message = "Success! User " + data.userid +" added";
-	
-  }
-  res.send(JSON.stringify(respJSON));
-});
+
 
 
 app.post('/users/modifyUserDetail', (req, res) => {
