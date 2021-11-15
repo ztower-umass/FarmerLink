@@ -141,7 +141,7 @@ async function getUser() {
 	  let inDataStr = getFormData();
 	  console.log(inDataStr);
 	  let inData    = JSON.parse(inDataStr);
-	  const res = await fetch("http://localhost:3000/users/getUserDetail", {
+	  const res = await fetch("users/getUserDetail", {
 		method: 'POST',
 		mode: 'cors',
 		headers: {
@@ -219,7 +219,7 @@ async function addUser() {
 	  let inDataStr = formStr;
 	  console.log(inDataStr);
 	  let inData    = JSON.parse(inDataStr);
-	  const res = await fetch("http://localhost:3000/users/addUserDetail", {
+	  const res = await fetch("users/addUserDetail", {
 		method: 'POST',
 		mode: 'cors',
 		headers: {
@@ -266,7 +266,7 @@ async function modifyUser() {
 	  let inDataStr = formStr;
 	  console.log(inDataStr);
 	  let inData    = JSON.parse(inDataStr);
-	  const res = await fetch("http://localhost:3000/users/modifyUserDetail", {
+	  const res = await fetch("users/modifyUserDetail", {
 		method: 'POST',
 		mode: 'cors',
 		headers: {
@@ -292,7 +292,7 @@ async function searchUser() {
   // uncomment after inDataStr is in json string form
   let inData    = JSON.parse(inDataStr);
    
-  const res = await fetch("http://localhost:3000/users/searchUserDetail", {
+  const res = await fetch("users/searchUserDetail", {
 	method: 'POST',
 	mode: 'cors',
 	headers: {
