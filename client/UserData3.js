@@ -77,7 +77,7 @@ function getFormData()
 				   '"email":'+'"' +emailVal+'"'+", "+
 				   '"phone":'+'"' +phoneVal+'"'+", "+
 				   '"grown":'+'"' +grownCsv+'"'+", "+
-				   '"interested":'+'"' +intrCsv+'"'+
+				   '"interests":'+'"' +intrCsv+'"'+
 				   '}';
   return inDataStr;
 }
