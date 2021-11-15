@@ -1,3 +1,19 @@
+function clearSw() {
+    let intrList = ["citrus" , "livestock" , "wheat" , "grapes" , "apples" , "banana" , 
+    "strawberry" , "cabbage" , "cauliflower" , "peas"];
+    let intrArr  = [];
+    let intrArrLen = intrArr.length;
+    for (const intr of intrList)  {
+        console.log("Intr is " + intr);
+        intrID = intr + "Sw";
+        grID   = intr + "GrSw"
+        console.log("IntrID is "+intrID);
+        const swVal = document.getElementById(intrID);
+        swVal.checked = false;
+        const grswVal = document.getElementById(grID);
+        grswVal.checked = false;
+    }
+}
 function getFormData()
 {
   const formUID = document.getElementById("userid");
