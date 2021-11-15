@@ -10,3 +10,6 @@ to_date ('1942-01-01', 'YYYY-MM-DD'),
 insert into FARMERLINK_USERS values ('dtrump','melania','donald','trump','02101',
 to_date ('1942-01-05', 'YYYY-MM-DD'),
 'donald@whitehouse.gov','978-522-2336','livestock,wheat','livestock,peas');
+insert into FARMERLINK_USERS values ('alincoln','marytodd','abe','lincoln','02109',
+to_date ('1842-01-05', 'YYYY-MM-DD'),
+'abe@whitehouse.gov','978-522-2336','grapes,wheat','livestock,citrus');
