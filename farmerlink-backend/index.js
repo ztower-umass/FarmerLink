@@ -6,7 +6,7 @@ const pool = new Pool({
     rejectUnauthorized: false
   }
 });
-
+// Vidya database changes end
 //Template - Sid
 const express = require("express");
 const cors = require("cors");
@@ -116,7 +116,43 @@ app.post('/crops/getCropWeatherData', (req, res) => {
   res.send(JSON.stringify(respJSON));
 });
 
+app.post('/listings/addListing', (req, res) => {
+  res.set(headers);
+  let data = req.body;
+  console.log(req.bodd)
+  console.log("addListing name" + data.name);
+  console.log("addListing location" + data.location);
+  console.log("addListing details" + data.details);
+  console.log("addListing contact" + data.contact);
+
+  let respJSON = {"name" : "", "message" : ""};
+  if (data.name === "dupe") {
+    respJSON["message"] = "That name is not allowed.";
+  } else {
+    respJSON["message"] = "Success! Listing added under name " + data.name + ".";
+  }
+});
+
+
+app.get('/listings/getListings', (req, res) => {
+  let data = req.body;
+  n_entries = 3;
+  let respList = [];
+  res.set(headers);
+  for(let i = 0; i < n_entries; i++) {
+    let singleEntry = { "name": "", "location": "", "details": 0, "contact": 0 }
+    singleEntry.name = faker.name.firstName() + " " + faker.name.lastName();
+    singleEntry.location = faker.address.zipCode();
+    singleEntry.details = faker.lorem.sentence();
+    singleEntry.contact = faker.internet.email();
+    respList.push(singleEntry);
+  }
+  
+  res.send(JSON.stringify(respList));
+});
+
 //Add your endpoints addUserDetail vidya
+//User related end points start here-----------------------------------------------------
 app.get('/user/getUserData', (req, res) => {
   res.set(headers);
 let data = req.body;
@@ -124,29 +160,6 @@ let data = req.body;
   respJSON.interests = [{"interest" : "potato"} , {"interest" : "potato"}, {"interest" : "potato"}];
   res.send(JSON.stringify(respJSON));
 });
-/*
-app.post('/users/getUserDetail', (req, res) => {
-  res.set(headers);
-  // Use request body appropriately when implementing full back-end functionality
-  let data = req.body;
-  console.log("getUserDetail userid " + data.userid);
-  console.log("modifyUserDetail password "+data.password);
-  console.log("modifyUserDetail fname "+data.fname);
-  console.log("modifyUserDetail lname "+data.lname);
-  console.log("modifyUserDetail zip "+data.zip);
-  console.log("modifyUserDetail birthday "+data.dob);
-  console.log("modifyUserDetail email "+data.email);
-  console.log("modifyUserDetail phone "+data.phone);  
-  console.log("modifyUserDetail interested "+data.interested);
-  console.log("modifyUserDetail grown "+data.grown);
-  
-  let respJSON = {"fname": "", "lname": "", "interests" : ""};
- // respJSON.fname = "Bill";
- // respJSON.lname = "Clinton";
-  //respJSON.interests = "apples,grapes,cauliflower";
-  res.send(JSON.stringify(respJSON));
-});
-*/
 
 app.post('/users/getUserDetail', async (req, res) => {
   try {
@@ -223,22 +236,6 @@ app.post('/users/addUserDetail', (req, res) => {
   res.send(JSON.stringify(respJSON));
 });
 
-app.post('/listings/addListing', (req, res) => {
-  res.set(headers);
-  let data = req.body;
-  console.log(req.bodd)
-  console.log("addListing name" + data.name);
-  console.log("addListing location" + data.location);
-  console.log("addListing details" + data.details);
-  console.log("addListing contact" + data.contact);
-
-  let respJSON = {"name" : "", "message" : ""};
-  if (data.name === "dupe") {
-    respJSON["message"] = "That name is not allowed.";
-  } else {
-    respJSON["message"] = "Success! Listing added under name " + data.name + ".";
-  }
-});
 
 app.post('/users/modifyUserDetail', (req, res) => {
   console.log("modify modifyUserDetail");
@@ -268,22 +265,6 @@ app.post('/users/modifyUserDetail', (req, res) => {
   res.send(JSON.stringify(respJSON));
 });
 
-app.get('/listings/getListings', (req, res) => {
-  let data = req.body;
-  n_entries = 3;
-  let respList = [];
-  res.set(headers);
-  for(let i = 0; i < n_entries; i++) {
-    let singleEntry = { "name": "", "location": "", "details": 0, "contact": 0 }
-    singleEntry.name = faker.name.firstName() + " " + faker.name.lastName();
-    singleEntry.location = faker.address.zipCode();
-    singleEntry.details = faker.lorem.sentence();
-    singleEntry.contact = faker.internet.email();
-    respList.push(singleEntry);
-  }
-  
-  res.send(JSON.stringify(respList));
-});
 
 //
 app.post('/users/searchUserDetail', (req, res) => {
@@ -328,7 +309,7 @@ async function validatePassword(client,userid,password) {
       console.log("Inside query -> " + JSON.stringify(results));
       return results;
 }
-
+//User related end points ends here-----------------------------------------------------
 app.listen(process.env.PORT, () => {
   console.log('FarmerLink Backend Listening on port 3000');
 })
