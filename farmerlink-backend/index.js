@@ -328,6 +328,6 @@ async function validatePassword(client,userid,password) {
       return results;
 }
 //User related end points ends here-----------------------------------------------------
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || port, () => {
   console.log('FarmerLink Backend Listening on port 3000');
 })
