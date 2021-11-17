@@ -18,6 +18,7 @@ const headers = {
     //Add Needed Headers
 
 };
+const axios = require('axios')
 
 //Middleware
 app.use(cors());
@@ -102,17 +103,6 @@ app.post('/forum/myPosts', (req, res) => {
   for (let i = 0; i < 5; ++i) {
     respJSON.title.push(faker.lorem.words());
   }
-  res.send(JSON.stringify(respJSON));
-});
-
-//Retrives appropriate crop and weather data based on zip and region inputs 
-app.post('/crops/getCropWeatherData', (req, res) => {
-  res.set(headers);
-  // Use request body appropriately when implementing full back-end functionality
-  let data = req.body;
-  let respJSON = {"weatherData": "", "cropData": ""};
-  respJSON.weatherData = faker.lorem.sentences();
-  respJSON.cropData = faker.lorem.sentences();
   res.send(JSON.stringify(respJSON));
 });
 

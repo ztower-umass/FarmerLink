@@ -77,18 +77,16 @@
         async function getData() {
           let zipCode = document.getElementById("zip").value;
           let region = document.getElementById("region").value;
-          let dataObj = {"zip": zipCode, "region": region};
-          const res = await fetch("/crops/getCropWeatherData", {
-            method: 'POST',
-            mode: 'cors',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(dataObj)
+          let url = `https://api.openweathermap.org/data/2.5/weather?zip=${zipCode}&appid=c9e010caf53fc7c997d50622aa448a3e`;
+          console.log(url);
+          const res = await fetch(url, {
+            method: 'GET',
+            mode: 'cors'
           });
           const allData = await res.json(); 
-          document.getElementById("weather-box").value = allData.weatherData;
-          document.getElementById("crop-box").value = allData.cropData;
+          console.log(allData);
+          //document.getElementById("weather-box").value = allData.weatherData;
+          //document.getElementById("crop-box").value = allData.cropData;
         }
       </script>
   </body>
