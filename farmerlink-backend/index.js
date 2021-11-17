@@ -124,7 +124,7 @@ app.post('/listings/addListing', (req, res) => {
 });
 
 
-app.get('/listings/getListings', (req, res) => {
+app.get('/listings/getListings', async (req, res) => {
   let data = req.body;
   let respList = [];
   res.set(headers);
