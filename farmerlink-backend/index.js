@@ -18,7 +18,6 @@ const headers = {
     //Add Needed Headers
 
 };
-const axios = require('axios')
 
 //Middleware
 app.use(cors());
