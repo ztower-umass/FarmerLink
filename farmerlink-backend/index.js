@@ -31,6 +31,7 @@ app.get('/test', (req, res) => {
     res.send('API running');
 });
 
+// App configuration
 //For URL formats, use "/nameOfPage/details"
 //Make sure to set the headers before sending the response
 //Retrieves post data
@@ -125,15 +126,23 @@ app.post('/listings/addListing', (req, res) => {
 
 app.get('/listings/getListings', (req, res) => {
   let data = req.body;
-  n_entries = 3;
   let respList = [];
   res.set(headers);
-  for(let i = 0; i < n_entries; i++) {
+
+  // fetch SQL listing data
+  let listingsQuery = `SELECT * FROM listings ORDER BY name LIMIT 100;`
+  const client = await pool.connect();
+  const result = await client.query(listingsQuery);
+
+  // loop through responses and attach it to response list
+  for(let i = 0; i < result.rows.length; i++) {
+    let currRow = result.rows[i];
+
     let singleEntry = { "name": "", "location": "", "details": 0, "contact": 0 }
-    singleEntry.name = faker.name.firstName() + " " + faker.name.lastName();
-    singleEntry.location = faker.address.zipCode();
-    singleEntry.details = faker.lorem.sentence();
-    singleEntry.contact = faker.internet.email();
+    singleEntry.name = currRow.name;
+    singleEntry.location = currRow.location;
+    singleEntry.details = currRow.details;
+    singleEntry.contact = currRow.contact;
     respList.push(singleEntry);
   }
   
