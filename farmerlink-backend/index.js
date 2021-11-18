@@ -99,14 +99,18 @@ app.post('/forum/myPosts', (req, res) => {
   res.send(JSON.stringify(respJSON));
 });
 
-app.post('/listings/addListing', (req, res) => {
+app.post('/listings/addListing', async (req, res) => {
   res.set(headers);
   let data = req.body;
-  console.log(req.bodd)
+  console.log(req.body);
   console.log("addListing name" + data.name);
   console.log("addListing location" + data.location);
   console.log("addListing details" + data.details);
   console.log("addListing contact" + data.contact);
+
+  const insertQuery = `INSERT INTO listings VALUES ('${data.name}', '${data.location}', '${data.details}', '${data.contact}');`;
+  const client = await pool.connect();
+  const result = await client.query(insertQuery);
 
   let respJSON = {"name" : "", "message" : ""};
   if (data.name === "dupe") {
