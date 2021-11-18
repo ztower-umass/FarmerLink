@@ -1,7 +1,7 @@
 // Vidya changes for database
 const { Pool } = require('pg');
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: process.env.DATABASE_URL || "postgres://uzrpwoqpcedeke:e09a1c5fc9d3e0921caa79a61792058366c4248343857f4d2a447c1d8687d0c9@ec2-54-174-172-218.compute-1.amazonaws.com:5432/d1it1qanjcljmu",
   ssl: {
     rejectUnauthorized: false
   }
@@ -185,7 +185,6 @@ app.post('/users/addUserDetail', async (req, res) => {
         const results = { 'results': (result) ? result.rows : null};
         console.log("Inside query -> " + JSON.stringify(results));
         console.log("Inside query1");
-        client.release();
         console.log("Inside query1");
         respJSON = results;
         console.log("Inside query afters -> " + JSON.stringify(respJSON));
@@ -240,7 +239,6 @@ app.post('/users/getUserDetail', async (req, res) => {
       const results = { 'results': (result) ? result.rows : null};
       console.log("Inside query -> " + JSON.stringify(results));
       console.log("Inside query1");
-      client.release();
       console.log("Inside query1");
       respJSON = results;
       console.log("Inside query afters -> " + JSON.stringify(respJSON));
@@ -315,7 +313,7 @@ async function validateUsers(client,userid) {
       let assembled_query = `SELECT userid from FARMERLINK_USERS WHERE userid = '${userid}'`
       console.log("assembled query ->" + assembled_query)
       const result = await client.query(assembled_query);
-      client.release();
+
       const results = { 'results': (result) ? result.rows : null};
       console.log("Inside query -> " + JSON.stringify(results));
       return results;
@@ -328,7 +326,7 @@ async function validatePassword(client,userid,password) {
       let assembled_query = `SELECT userid from FARMERLINK_USERS WHERE userid = '${userid}' and password = '${password}'`
       console.log("assembled query ->" + assembled_query)
       const result = await client.query(assembled_query);
-      client.release();
+
       const results = { 'results': (result) ? result.rows : null};
       if (results.length === 0) {
         results[0] = '{"userid" : "", "password" : ""}';
