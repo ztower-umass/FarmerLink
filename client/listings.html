@@ -98,12 +98,24 @@
         const refreshButtonObj = document.getElementById("refreshBtn");
         const submitButtonObj  = document.getElementById("SubmitListing");
         
-        function userInSession() {
-            return localSession['auth'];
+        
+        async function userInSession() {
+            const res = fetch("/users/getUserDetail", {
+                method: "POST",
+                header: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    userid: window.localStorage["username"],
+                    password: window.localStorage["password"]
+                })
+            });
+            return !(res.message == "Failure");
         }
-
+    
         async function submitButton() {
-            if(!userInSession()) {
+            let userSes = await userInSession();
+            if(!userSes) {
                 alert("User must be logged in to submit a listing.");
                 return;
             }
