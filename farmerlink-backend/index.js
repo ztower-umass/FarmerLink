@@ -1,7 +1,7 @@
 // Vidya changes for database
 const { Pool } = require('pg');
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: process.env.DATABASE_URL || "postgres://uzrpwoqpcedeke:e09a1c5fc9d3e0921caa79a61792058366c4248343857f4d2a447c1d8687d0c9@ec2-54-174-172-218.compute-1.amazonaws.com:5432/d1it1qanjcljmu",
   ssl: {
     rejectUnauthorized: false
   }
@@ -50,16 +50,25 @@ app.get('/forum/getPostData', async (req, res) => {
   for (let i = 0; i < result.rows.length; ++i) {
     arr.push({"commentTitle": result.rows[i].title, "userID": result.rows[i].user_id, "postID": result.rows[i].post_id});
   }
-
+  
+  client.release();
   res.send(JSON.stringify(arr));
 });
 
 //Adds a comment to a specific post
-app.post('/forum/addComment', (req, res) => {
+app.post('/forum/addComment', async (req, res) => {
   res.set(headers);
   // Use request body appropriately when implementing full back-end functionality
   let data = req.body;
+  let userID = data.user_id;
+  let postID = data.post_id;
+  let commentTitle = data.title;
   //Store new comment appropriately
+  const client = await pool.connect();
+  let assembled_query = `INSERT INTO Comments VALUES ('${userID}', '${postID}', '${commentTitle}');`;
+  const result = await client.query(assembled_query);
+  
+  client.release();
   res.send(JSON.stringify(200));
 });
 
@@ -68,12 +77,13 @@ app.post('/forum/getCommentforPost', async (req, res) => {
   res.set(headers);
   // Use request body appropriately when implementing full back-end functionality
   let data = req.body;
-  let pID = data.postID;
+  let pID = data.post_id;
   //Get the comments for the specific post
   const client = await pool.connect();
   let assembled_query = `SELECT * FROM Comments WHERE post_id = '${pID}';`;
-  console.log(assembled_query);
   const result = await client.query(assembled_query);
+
+  client.release();
   res.send(JSON.stringify(result.rows));
 });
 
