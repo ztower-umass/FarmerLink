@@ -184,7 +184,8 @@ async function getUser() {
 				  	// we set the user as logged in
 					  let username = useridVal;
 					  let password = passwordVal;
-					  myStorage.setItem(username, password);
+					  myStorage.setItem("username", username);
+					  myStorage.setItem("password", password)
 
 					  console.log("in 1" + JSON.stringify(data[0]));
 					  document.getElementById("lname").value = data[0].lname;

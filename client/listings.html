@@ -81,13 +81,9 @@
         <button type="button" class="btn btn-success" id="refreshBtn">Refresh</button>
     </div>
     <div class="center" id=fields>
-        <label>Location</label>
-        <input type="text" id="formLocation">
         <label>Details</label>
         <input type="text" id="formDetails">
-        <label>Contact</label>
-        <input type="text" id="formLocation">
-        <button id="SubmitListing" class="btn btn-success">Submit Listing</button>
+        <button id="SubmitListing" class="btn btn-success">Submit</button>
     </div>
 
     <footer class="footer mt-auto py-3 bg-dark" id="main-footer">
@@ -98,7 +94,60 @@
         </div>
     </footer>
     <script type = "text/javascript">
-        let refreshButtonObj = document.getElementById("refreshBtn");
+        let localSession = window.localStorage();
+        const refreshButtonObj = document.getElementById("refreshBtn");
+        const submitButton     = document.getElementById("SubmitListing");
+        
+        function userInSession() {
+            return localSession['auth'];
+        }
+
+        async function submitButton() {
+            if(!userInSession()) {
+                alert("User must be logged in to submit a listing.");
+                return;
+            }
+
+            let username  = localSession["user"];
+            let password  = localSession["password"];
+            let fetchBody = JSON.stringify({
+                "userid": username,
+                "password": password
+            });
+
+            const userData = await fetch("/users/getUserDetail", {
+                method: 'GET',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: fetchBody
+            });
+
+            if(userData.results.length == 0) {
+                alert("Validation error. Log in to try again.");
+            }  
+            let userFields = userData.results[0];
+            let name     = `${userFields["fname"]} ${userFields["lname"]}`;
+            let location = userFields.zip;
+            let contact  = userField.email;
+            let details  = document.getElementById("formDetails").value; 
+
+            let insertResponse = await fetch("listings/addListing", {
+                method: "POST",
+                mode: "cors",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: {
+                    name: name,
+                    location: location,
+                    details: details,
+                    contact: contact
+                }
+            });
+        }
+
         async function refreshButton() {
             
             

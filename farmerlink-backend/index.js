@@ -218,7 +218,7 @@ app.post('/users/getUserDetail', async (req, res) => {
       const results_null  = {results : []};
       console.log("pwuwerid rejected");
       respJSON = results_null 
-      respJSON.message = 'Success';
+      respJSON.message = 'Failure';
       res.send(JSON.stringify(respJSON));
     } else {
     // Assemble query
