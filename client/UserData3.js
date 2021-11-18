@@ -1,3 +1,5 @@
+let myStorage = window.localStorage;
+
 function clearSw() {
     let intrList = ["citrus" , "livestock" , "wheat" , "grapes" , "apples" , "banana" , 
     "strawberry" , "cabbage" , "cauliflower" , "peas"];
@@ -179,6 +181,11 @@ async function getUser() {
 		//set values retrieved from database.
 		if (resp.message == 'Success') {
 			  if (data.length === 1) {
+				  	// we set the user as logged in
+					  let username = formUID;
+					  let password = passwordVal;
+					  myStorage.setItem(username, password);
+
 					  console.log("in 1" + JSON.stringify(data[0]));
 					  document.getElementById("lname").value = data[0].lname;
 					  document.getElementById("fname").value = data[0].fname;
@@ -273,7 +280,7 @@ async function addUser() {
 
 async function modifyUser() {
   //createPostModal.style.display = "none";
-  
+  myStorage.clear();
   let formStr = getFormData();
   let jsonForm = JSON.parse(formStr);
   let errorStr = "";
