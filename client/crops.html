@@ -9,7 +9,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="CROPS.css">
-	<link rel="stylesheet" type="text/css" href="userPage.css">
+  <link rel="stylesheet" type="text/css" href="userPage.css">
 
     <title>FarmerLink</title>
   </head>
@@ -27,7 +27,7 @@
    
             <div class="text-end">
                  <a href="userPage.html" button type="button" class="btn btn-light" id = "profile-button">My Profile</a>
-				 <a href="search.html" button type="button" class="btn btn-light" id = "profile-button">Search Profiles</a>
+         <a href="search.html" button type="button" class="btn btn-light" id = "profile-button">Search Profiles</a>
 
             </div>
           </div>
@@ -76,7 +76,7 @@
             mode: 'cors'
           });
           let weatherData = await res.json(); 
-          let temp = weatherData.main.temp -  273.15;
+          let temp = (weatherData.main.temp - 273.15).toFixed(2);
           let cropList = [];
           
           if (temp > 5 && temp < 35) {
@@ -131,14 +131,12 @@
             cropList.push("bell peppers")
           }
 
-          console.log(cropList);
-          
           let str = "";
           for (let i = 0; i < cropList.length; ++i) {
-            str = str + `, ${cropList[i]}`;
+            str = str + `${cropList[i]}, `;
           }
 
-          document.getElementById("weather-box").value = JSON.stringify(weatherData.weather) + JSON.stringify(weatherData.main) + JSON.stringify(weatherData.wind);
+          document.getElementById("weather-box").value = "Description: " + weatherData.weather[0].description + " Temperature: " + temp + " °C" + " Max Temp: " + (weatherData.main.temp_max - 273.15).toFixed(2) + " °C" + " Min Temp: " + (weatherData.main.temp_min - 273.15).toFixed(2) + " °C" + " Humidity: " + weatherData.main.humidity + "%" + " Wind Speed: " + weatherData.wind.speed + "m/s";
           if (str !== "") {
             document.getElementById("crop-box").value = "The best crops to grow in the given region based on current climate conditions are: " + str;
           }
@@ -149,3 +147,4 @@
       </script>
   </body>
 </html>
+

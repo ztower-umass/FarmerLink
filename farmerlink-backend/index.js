@@ -35,14 +35,23 @@ app.get('/test', (req, res) => {
 //For URL formats, use "/nameOfPage/details"
 //Make sure to set the headers before sending the response
 //Retrieves post data
-app.get('/forum/getPostData', (req, res) => {
+app.get('/forum/getPostData', async (req, res) => {
   res.set(headers);
-  let respJSON = {"commentTitle": "", "user": "", "upvotes": 0, "downvotes": 0}
+  let respJSON = {"commentTitle": "", "userID": "", "postID": ""}
   respJSON.commentTitle = faker.lorem.sentences();
   respJSON.user = faker.internet.userName();
-  respJSON.upvotes = Math.floor(Math.random() * 100);
-  respJSON.downvotes = Math.floor(Math.random() * 100);
-  res.send(JSON.stringify(respJSON));
+
+
+  const client = await pool.connect();
+  let assembled_query = `SELECT * FROM Posts;`;
+  const result = await client.query(assembled_query);
+  
+  let arr = [];
+  for (let i = 0; i < result.rows.length; ++i) {
+    arr.push({"commentTitle": result.rows[i].title, "userID": result.rows[i].user_id, "postID": result.rows[i].post_id});
+  }
+
+  res.send(JSON.stringify(arr));
 });
 
 //Adds a comment to a specific post
@@ -54,34 +63,18 @@ app.post('/forum/addComment', (req, res) => {
   res.send(JSON.stringify(200));
 });
 
-//Adds upvote to a post
-app.post('/forum/upvote', (req, res) => {
-  res.set(headers);
-  // Use request body appropriately when implementing full back-end functionality
-  let data = req.body;
-  res.send(JSON.stringify(200));
-});
-
-//Adds upvote to a post
-app.post('/forum/downvote', (req, res) => {
-  res.set(headers);
-  // Use request body appropriately when implementing full back-end functionality
-  let data = req.body;
-  res.send(JSON.stringify(200));
-});
-
 //Gets comments for a specific spost
-app.post('/forum/getCommentforPost', (req, res) => {
+app.post('/forum/getCommentforPost', async (req, res) => {
   res.set(headers);
   // Use request body appropriately when implementing full back-end functionality
   let data = req.body;
+  let pID = data.postID;
   //Get the comments for the specific post
-  let commentData = {"users": [], "comments": []};
-  for (let i = 0; i < 5; ++i) {
-    commentData.users.push(faker.internet.userName());
-    commentData.comments.push(faker.lorem.sentences());
-  }
-  res.send(JSON.stringify(commentData));
+  const client = await pool.connect();
+  let assembled_query = `SELECT * FROM Comments WHERE post_id = '${pID}';`;
+  console.log(assembled_query);
+  const result = await client.query(assembled_query);
+  res.send(JSON.stringify(result.rows));
 });
 
 //Adds new post to server

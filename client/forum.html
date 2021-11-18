@@ -113,12 +113,13 @@
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li><a href="#" class="nav-link px-2 text-white" id = "footer-text">About</a></li>
             </ul>
-          </div>
+            </div>
       </footer>
 
       <script type = "text/javascript">
 
         let max = 0;
+        let curPostID = "";
 
         async function getPostData() {
           const res = await fetch("/forum/getPostData", {
@@ -136,65 +137,35 @@
 
           getMyPosts();
         
-          for (let i = 0; i < 10; ++i) {
-            postCreation(i, "***default***");
+          const posts = await getPostData();
+          for (let i = 0; i < posts.length; ++i) {
+            postCreation(i, posts[i].commentTitle, posts[i].userID, posts[i].postID);
           }
         };
 
-        async function postCreation(i, title, user) {
+        async function postCreation(i, title, user, postID) {
           let newDiv;
           let newTitle;
           let newUser;
-          let newUpv;
-          let newDownv;
-          let upvButton;
-          let downvButton;
           let addCommentButton;
           let viewCommentButton;
-
-          const values = await getPostData();
 
           newDiv = document.createElement("div");
           newTitle = document.createElement("h6");
           newUser = document.createElement("h6");
-          newUpv = document.createElement("h6");
-          newDownv = document.createElement("h6");
-          upvButton = document.createElement("button");
-          downvButton = document.createElement("button");
           addCommentButton = document.createElement("button");
           viewCommentButton = document.createElement("button");
           newDiv.className = "listing-post";
-          newDiv.id = `listing-post${i + 1}`;
+          newDiv.id = postID;
 
-          if (title === "***default***") {
-            newTitle.innerHTML = values.commentTitle;
-          }
-          else {
-            newTitle.innerHTML = title;
-          }
 
-          if (user === "You") { 
-            newUser.innerHTML = "User: " + user;
-          }
-          else {
-            newUser.innerHTML = "User: " + values.user;
-          }
-          newUpv.innerHTML = "Upvotes: " + values.upvotes;
-          newUpv.className = "upvote-data";
-          newDownv.innerHTML = "Downvotes: " + values.downvotes;
-          newDownv.className = "downvote-data";
-          upvButton.className = "btn btn-primary";
-          upvButton.id = `upvote-button${i + 1}`;
-          upvButton.innerHTML = "U";
-          upvButton.onclick = function() {upvotePost(newDiv.id)};
-          downvButton.className = "btn btn-danger";
-          downvButton.id = `downvote-button${i + 1}`;
-          downvButton.innerHTML = "D";
-          downvButton.onclick = function() {downvotePost(newDiv.id)};
+          newTitle.innerHTML = title;
+          newUser.innerHTML = "User: " + user;
+
           addCommentButton.className = "btn btn-success";
           addCommentButton.id = `add-comment${i + 1}`;
           addCommentButton.innerHTML = "Comment";
-          addCommentButton.onclick = function() {addComment()};
+          addCommentButton.onclick = function() {addComment(postID)};
           viewCommentButton.className = "btn btn-warning";
           viewCommentButton.id = `view-comment${i + 1}`;
           viewCommentButton.innerHTML = "View Comments";
@@ -202,10 +173,6 @@
 
           newDiv.appendChild(newTitle);
           newDiv.appendChild(newUser);
-          newDiv.appendChild(newUpv);
-          newDiv.appendChild(newDownv);
-          newDiv.appendChild(upvButton);
-          newDiv.appendChild(downvButton);
           newDiv.appendChild(addCommentButton);
           newDiv.appendChild(viewCommentButton);
           document.getElementById("listing-scrolling").prepend(newDiv);
@@ -256,8 +223,9 @@
           }
         }
 
-        function addComment() {
+        function addComment(postID) {
           postModal.style.display = "block";
+          curPostID = postID;
         }
 
         async function postComment() {
@@ -351,34 +319,6 @@
 
         function closeMyPosts() {
           myPostsModal.style.display = "none";
-        }
-
-        async function upvotePost(id) {
-          let text = document.getElementById(id).querySelector(".upvote-data").innerHTML;
-          text = parseInt(text.split(" ")[1]) + 1;
-          document.getElementById(id).querySelector(".upvote-data").innerHTML = "Upvotes: " + text.toString();
-          const res = await fetch("/forum/upvote", {
-            method: 'POST',
-            mode: 'cors',
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          });
-          let data = await res.json();
-        }
-
-        async function downvotePost(id) {
-          let text = document.getElementById(id).querySelector(".downvote-data").innerHTML;
-          text = parseInt(text.split(" ")[1]) + 1;
-          document.getElementById(id).querySelector(".downvote-data").innerHTML = "Downvotes: " + text.toString();
-          const res = await fetch("/forum/downvote", {
-            method: 'POST',
-            mode: 'cors',
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          });
-          let data = await res.json();
         }
       </script>
   </body>
