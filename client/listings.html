@@ -100,7 +100,7 @@
         
         
         async function userInSession() {
-            const res = fetch("/users/getUserDetail", {
+            const res = await fetch("/users/getUserDetail", {
                 method: "POST",
                 header: {
                     "Content-Type": "application/json"
