@@ -50,7 +50,7 @@ app.get('/forum/getPostData', async (req, res) => {
   for (let i = 0; i < result.rows.length; ++i) {
     arr.push({"commentTitle": result.rows[i].title, "userID": result.rows[i].user_id, "postID": result.rows[i].post_id});
   }
-
+  client.release();
   res.send(JSON.stringify(arr));
 });
 
@@ -74,6 +74,7 @@ app.post('/forum/getCommentforPost', async (req, res) => {
   let assembled_query = `SELECT * FROM Comments WHERE post_id = '${pID}';`;
   console.log(assembled_query);
   const result = await client.query(assembled_query);
+  client.release();
   res.send(JSON.stringify(result.rows));
 });
 
@@ -111,7 +112,7 @@ app.post('/listings/addListing', async (req, res) => {
   const insertQuery = `INSERT INTO listings VALUES ('${data.name}', '${data.location}', '${data.details}', '${data.contact}');`;
   const client = await pool.connect();
   const result = await client.query(insertQuery);
-
+  client.release();
   let respJSON = {"name" : "", "message" : ""};
   if (data.name === "dupe") {
     respJSON["message"] = "That name is not allowed.";
@@ -130,7 +131,7 @@ app.get('/listings/getListings', async (req, res) => {
   let listingsQuery = `SELECT * FROM listings ORDER BY name LIMIT 100;`
   const client = await pool.connect();
   const result = await client.query(listingsQuery);
-
+  client.release();
   // loop through responses and attach it to response list
   for(let i = 0; i < result.rows.length; i++) {
     let currRow = result.rows[i];
@@ -171,6 +172,7 @@ app.post('/users/addUserDetail', async (req, res) => {
                                                                     '${data.email}','${data.phone}','${data.interests}','${data.grown}')`
         console.log("assembled query ->" + assembled_query)
         const result = await client.query(assembled_query);
+        client.release();
         const results = { 'results': (result) ? result.rows : null};
         console.log("Inside query -> " + JSON.stringify(results));
         console.log("Inside query1");
@@ -225,6 +227,7 @@ app.post('/users/getUserDetail', async (req, res) => {
       let assembled_query = `SELECT fname,lname,zip,to_char(dob,'yyyy-mm-dd') as dob,email,phone,interests,grown FROM FARMERLINK_USERS where userid = '${data.userid}'`;
       console.log("assembled query ->" + assembled_query)
       const result = await client.query(assembled_query);
+      client.release();
       const results = { 'results': (result) ? result.rows : null};
       console.log("Inside query -> " + JSON.stringify(results));
       console.log("Inside query1");
@@ -303,6 +306,7 @@ async function validateUsers(client,userid) {
       let assembled_query = `SELECT userid from FARMERLINK_USERS WHERE userid = '${userid}'`
       console.log("assembled query ->" + assembled_query)
       const result = await client.query(assembled_query);
+      client.release();
       const results = { 'results': (result) ? result.rows : null};
       console.log("Inside query -> " + JSON.stringify(results));
       return results;
@@ -315,6 +319,7 @@ async function validatePassword(client,userid,password) {
       let assembled_query = `SELECT userid from FARMERLINK_USERS WHERE userid = '${userid}' and password = '${password}'`
       console.log("assembled query ->" + assembled_query)
       const result = await client.query(assembled_query);
+      client.release();
       const results = { 'results': (result) ? result.rows : null};
       if (results.length === 0) {
         results[0] = '{"userid" : "", "password" : ""}';
