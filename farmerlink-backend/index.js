@@ -1,7 +1,7 @@
 // Vidya changes for database
 const { Pool } = require('pg');
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: process.env.DATABASE_URL || 'postgres://uzrpwoqpcedeke:e09a1c5fc9d3e0921caa79a61792058366c4248343857f4d2a447c1d8687d0c9@ec2-54-174-172-218.compute-1.amazonaws.com:5432/d1it1qanjcljmu',
   ssl: {
     rejectUnauthorized: false
   }
@@ -35,14 +35,23 @@ app.get('/test', (req, res) => {
 //For URL formats, use "/nameOfPage/details"
 //Make sure to set the headers before sending the response
 //Retrieves post data
-app.get('/forum/getPostData', (req, res) => {
+app.get('/forum/getPostData', async (req, res) => {
   res.set(headers);
-  let respJSON = {"commentTitle": "", "user": "", "upvotes": 0, "downvotes": 0}
+  let respJSON = {"commentTitle": "", "userID": "", "postID": ""}
   respJSON.commentTitle = faker.lorem.sentences();
   respJSON.user = faker.internet.userName();
-  respJSON.upvotes = Math.floor(Math.random() * 100);
-  respJSON.downvotes = Math.floor(Math.random() * 100);
-  res.send(JSON.stringify(respJSON));
+
+
+  const client = await pool.connect();
+  let assembled_query = `SELECT * FROM Posts;`;
+  const result = await client.query(assembled_query);
+  
+  let arr = [];
+  for (let i = 0; i < result.rows.length; ++i) {
+    arr.push({"commentTitle": result.rows[i].title, "userID": result.rows[i].user_id, "postID": result.rows[i].post_id});
+  }
+
+  res.send(JSON.stringify(arr));
 });
 
 //Adds a comment to a specific post
@@ -71,17 +80,17 @@ app.post('/forum/downvote', (req, res) => {
 });
 
 //Gets comments for a specific spost
-app.post('/forum/getCommentforPost', (req, res) => {
+app.post('/forum/getCommentforPost', async (req, res) => {
   res.set(headers);
   // Use request body appropriately when implementing full back-end functionality
   let data = req.body;
+  let pID = data.postID;
   //Get the comments for the specific post
-  let commentData = {"users": [], "comments": []};
-  for (let i = 0; i < 5; ++i) {
-    commentData.users.push(faker.internet.userName());
-    commentData.comments.push(faker.lorem.sentences());
-  }
-  res.send(JSON.stringify(commentData));
+  const client = await pool.connect();
+  let assembled_query = `SELECT * FROM Comments WHERE post_id = '${pID}';`;
+  console.log(assembled_query);
+  const result = await client.query(assembled_query);
+  res.send(JSON.stringify(result.rows));
 });
 
 //Adds new post to server
