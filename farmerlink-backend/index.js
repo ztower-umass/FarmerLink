@@ -1,7 +1,7 @@
 // Vidya changes for database
 const { Pool } = require('pg');
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || 'postgres://uzrpwoqpcedeke:e09a1c5fc9d3e0921caa79a61792058366c4248343857f4d2a447c1d8687d0c9@ec2-54-174-172-218.compute-1.amazonaws.com:5432/d1it1qanjcljmu',
+  connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false
   }
