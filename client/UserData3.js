@@ -182,7 +182,7 @@ async function getUser() {
 		if (resp.message == 'Success') {
 			  if (data.length === 1) {
 				  	// we set the user as logged in
-					  let username = formUID;
+					  let username = useridVal;
 					  let password = passwordVal;
 					  myStorage.setItem(username, password);
 
