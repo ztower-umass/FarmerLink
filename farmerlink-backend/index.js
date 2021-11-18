@@ -63,22 +63,6 @@ app.post('/forum/addComment', (req, res) => {
   res.send(JSON.stringify(200));
 });
 
-//Adds upvote to a post
-app.post('/forum/upvote', (req, res) => {
-  res.set(headers);
-  // Use request body appropriately when implementing full back-end functionality
-  let data = req.body;
-  res.send(JSON.stringify(200));
-});
-
-//Adds upvote to a post
-app.post('/forum/downvote', (req, res) => {
-  res.set(headers);
-  // Use request body appropriately when implementing full back-end functionality
-  let data = req.body;
-  res.send(JSON.stringify(200));
-});
-
 //Gets comments for a specific spost
 app.post('/forum/getCommentforPost', async (req, res) => {
   res.set(headers);
