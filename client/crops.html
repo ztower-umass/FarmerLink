@@ -25,7 +25,7 @@
             password: window.localStorage["password"] 
           })
         });
-        if(res.message == "Failure") {
+        if(!(res.message == "Success")) {
           window.location.href = "/userPage.html"
         }
       }

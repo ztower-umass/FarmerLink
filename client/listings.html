@@ -110,7 +110,7 @@
                     password: window.localStorage["password"]
                 })
             });
-            return !(res.message == "Failure");
+            return res.message == "Success";
         }
     
         async function submitButton() {
@@ -136,7 +136,7 @@
                 body: fetchBody
             });
 
-            if(userData.results.length == 0) {
+            if(userData['results'] === null) {
                 alert("Validation error. Log in to try again.");
             }  
             let userFields = userData.results[0];

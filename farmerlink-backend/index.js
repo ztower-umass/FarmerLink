@@ -215,7 +215,7 @@ app.post('/users/getUserDetail', async (req, res) => {
    console.log("valid " + JSON.stringify(validPw));
    console.log("valid length " + validPw.results.length);
     if ( validUser.results.length === 0 || validPw.results.length === 0) {
-      const results_null  = {results : []};
+      const results_null  = {results : null};
       console.log("pwuwerid rejected");
       respJSON = results_null 
       respJSON.message = 'Failure';
@@ -238,7 +238,7 @@ app.post('/users/getUserDetail', async (req, res) => {
     }
     } catch (err) {
       console.error(err);
-      const results = { 'results': {}};
+      const results = { 'results': null};
       respJSON = results;
       respJSON.message = "Database Error.  Please contact our helpline";
       console.log("Error " + err);
