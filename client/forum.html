@@ -169,7 +169,7 @@
           viewCommentButton.className = "btn btn-warning";
           viewCommentButton.id = `view-comment${i + 1}`;
           viewCommentButton.innerHTML = "View Comments";
-          viewCommentButton.onclick = function() {viewComments()};
+          viewCommentButton.onclick = function() {viewComments(postID)};
 
           newDiv.appendChild(newTitle);
           newDiv.appendChild(newUser);
@@ -230,42 +230,45 @@
 
         async function postComment() {
           postModal.style.display = "none";
+          let userID = window.localStorage.getItem("username");
           let comment = document.getElementById("new-comment-text").value;
           const res = await fetch("/forum/addComment", {
             method: 'POST',
             mode: 'cors',
             headers: {
               'Content-Type': 'application/json'
-            }
+            },
+            body: JSON.stringify({"user_id": userID, "post_id": curPostID, "title": comment})
           });
           let data = await res.json();
+          document.getElementById("new-comment-text").value = "";
           alert("Comment Posted");
         }
 
-        async function viewComments() {
+        async function viewComments(postID) {
           document.getElementById("inner-comment-modal").innerHTML = "";
           viewModal.style.display = "block";
+          curPostID = postID;
           const res = await fetch("/forum/getCommentforPost", {
             method: 'POST',
             mode: 'cors',
             headers: {
               'Content-Type': 'application/json'
-            }
+            },
+            body: JSON.stringify({"post_id": postID})
           });
           let data = await res.json();
-          let users = data.users;
-          let comments = data.comments;
 
           let newUser;
           let newComment;
           let newBR;
 
-          for (let i = 0; i < users.length; ++i) {
+          for (let i = 0; i < data.length; ++i) {
             newUser = document.createElement("h6");
             newComment = document.createElement("p");
             newBR = newTitle = document.createElement("br");
-            newUser.innerHTML = users[i];
-            newComment.innerHTML = comments[i];
+            newUser.innerHTML = data[i].user_id;
+            newComment.innerHTML = data[i].comment_title;
           
             document.getElementById("inner-comment-modal").appendChild(newUser);
             document.getElementById("inner-comment-modal").appendChild(newComment);
