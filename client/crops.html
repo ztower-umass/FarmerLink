@@ -12,6 +12,26 @@
   <link rel="stylesheet" type="text/css" href="userPage.css">
 
     <title>FarmerLink</title>
+
+    <script>
+      async function redirectIfNotValidated() {
+        const res = fetch("/users/getUserDetail", {
+          method: "POST",
+          header: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            userid: window.localStorage["username"],
+            password: window.localStorage["password"] 
+          })
+        });
+        if(res.message == "Failure") {
+          window.location.href = "/userPage.html"
+        }
+      }
+
+      redirectIfNotValidated();
+    </script>
   </head>
   <body>
     <header class="p-3 bg-dark text-black" id = "main-header">
