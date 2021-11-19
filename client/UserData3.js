@@ -374,3 +374,8 @@ function getResults(insArr) {
   }
 }
 
+function logoutSession() {
+	window.localStorage.clear();
+	window.location.href = "/userPage.html";
+}
+
