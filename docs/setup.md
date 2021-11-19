@@ -1,17 +1,37 @@
-# FarmerLink Setup
+# FarmerLink Setup, First Revision
 
-## Requirements
+## Local Setup
 
-Node ver. 15 or later
+To run the web server locally:
 
-# Startup
+1) To get database access, you must attach the Postgre server URL into line 4 (or thereabout) of index.js as follows:
 
-To start the web server on port 3000 from a recent release:
+        const pool = new Pool({
+            connectionString: process.env.DATABASE_URL,
+            ssl: {
+                rejectUnauthorized: false
+            }
+        });
 
-1) Navigate to the project root directory,
+becomes
 
-2) Run the following command:
+        const pool = new Pool({
+            connectionString: process.env.DATABASE_URL || "X",
+            ssl: {
+                rejectUnauthorized: false
+            }
+        });
+
+where X is the full name of the PostgreSQL URL.
+
+2) Boot the server with
 
         node /farmerlink-backend/index.js
 
-3) To stop the server, perform a console interrupt.
+The website should now be fully functional and responsive to server queries. Use name localhost:3000/. 
+
+# Heroku Setup
+
+Heroku will automatically start upon a push to the FarmerLink Github given the included config files.
+
+Note that a PostgreSQL Heroku plugin is required. See Heroku documentation for PostgreSQL integration for more on configuring this.
