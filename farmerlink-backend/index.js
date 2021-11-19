@@ -1,7 +1,7 @@
 // Vidya changes for database
 const { Pool } = require('pg');
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: process.env.DATABASE_URL || "postgres://uzrpwoqpcedeke:e09a1c5fc9d3e0921caa79a61792058366c4248343857f4d2a447c1d8687d0c9@ec2-54-174-172-218.compute-1.amazonaws.com:5432/d1it1qanjcljmu",
   ssl: {
     rejectUnauthorized: false
   }
@@ -148,8 +148,8 @@ app.get('/listings/getListings', async (req, res) => {
     let singleEntry = { "name": "", "location": "", "details": 0, "contact": 0 }
     singleEntry.name = currRow.name;
     singleEntry.location = currRow.location;
-    singleEntry.details = currRow.details;
-    singleEntry.contact = currRow.contact;
+    singleEntry.details  = currRow.details;
+    singleEntry.contact  = currRow.contact;
     respList.push(singleEntry);
   }
   
@@ -183,7 +183,7 @@ app.post('/users/addUserDetail', async (req, res) => {
         const result = await client.query(assembled_query);
         client.release();
         const results = { 'results': (result) ? result.rows : null};
-        console.log("Inside query -> " + JSON.stringify(results));
+        console.log("(addUserDetail) Inside query -> " + JSON.stringify(results));
         console.log("Inside query1");
         console.log("Inside query1");
         respJSON = results;
@@ -211,48 +211,79 @@ let data = req.body;
 });
 
 app.post('/users/getUserDetail', async (req, res) => {
+
+  // cleaning up this code a bit...
+
+  console.log("getUserDetail running...");
+
   try {
-    let respJSON = {};
     res.set(headers);
-  // Use request body appropriately when implementing full back-end functionality
+
+    // Use request body appropriately when implementing full back-end functionality
     let data = req.body;
+
+
+    console.log(`data=${JSON.stringify(data)}`);
+
+    // connect to SQL DB
     const client = await pool.connect();
-   // Validate users
-   validUser = await validateUsers(client,data.userid);
-   console.log("valid " + JSON.stringify(validUser));
-   console.log("valid length " + validUser.results.length);
-   validPw = await validatePassword(client,data.userid,data.password);
-   console.log("valid " + JSON.stringify(validPw));
-   console.log("valid length " + validPw.results.length);
-    if ( validUser.results.length === 0 || validPw.results.length === 0) {
-      const results_null  = {results : null};
-      console.log("pwuwerid rejected");
-      respJSON = results_null 
-      respJSON.message = 'Failure';
-      res.send(JSON.stringify(respJSON));
-    } else {
-    // Assemble query
+
+    // validate username and password
+    validUser = await validateUsers(client,data["userid"]);
+    validPw   = await validatePassword(client,data.userid,data.password);
+
+    // console.log("valid " + JSON.stringify(validUser));
+    // console.log("valid length " + validUser.results.length);
+    // console.log("valid " + JSON.stringify(validPw));
+    // console.log("valid length " + validPw.results.length);
+
+    // now we check if username and password came back correctly
+    if ( !validUser || !validPw) { // incorrect username / pass
+      console.log("invalid username");
+      const results_null  = {
+        body: {
+          "results": null,
+          "message": "Failure (incorrect username or password)"
+        }
+      };
+      
+      // send the failure message back
+      res.send(JSON.stringify(results_null));
+
+    } 
+    else { // username correct
+      // Assemble query
+      console.log("username + pass correct");
       let assembled_query = `SELECT fname,lname,zip,to_char(dob,'yyyy-mm-dd') as dob,email,phone,interests,grown FROM FARMERLINK_USERS where userid = '${data.userid}'`;
-      console.log("assembled query ->" + assembled_query)
-      const result = await client.query(assembled_query);
+      // console.log("assembled query ->" + assembled_query)
+
+      // hit DB and close DB connection
+      const queryResult = await client.query(assembled_query);
       client.release();
-      const results = { 'results': (result) ? result.rows : null};
-      console.log("Inside query -> " + JSON.stringify(results));
-      console.log("Inside query1");
-      console.log("Inside query1");
-      respJSON = results;
-      console.log("Inside query afters -> " + JSON.stringify(respJSON));
+
+       // construct response object
+      const responseObj = { 
+        'results': (queryResult) ? queryResult.rows : null,
+        'message': 'Success'
+      };
+      // console.log("Inside query -> " + JSON.stringify(results));
+      // console.log("Inside query1");
+      // console.log("Inside query1");
+      // console.log("Inside query afters -> " + JSON.stringify(respJSON));
       //Send success message and results back
-      respJSON.message = 'Success';
-      res.send(JSON.stringify(respJSON));
+      console.log(`Response is ${JSON.stringify(responseObj)}`)
+      res.send(JSON.stringify(responseObj));
     }
-    } catch (err) {
-      console.error(err);
-      const results = { 'results': null};
-      respJSON = results;
-      respJSON.message = "Database Error.  Please contact our helpline";
-      console.log("Error " + err);
-      res.send(JSON.stringify(respJSON));
+  } catch (err) {
+    console.log("Database error");
+    console.error(err);
+    const responseObj = {
+      'results': null,
+      'message': 'Database error'
+    };
+    
+    // console.log("Error " + err);
+    res.send(JSON.stringify(responseObj));
   }
 })
 
@@ -306,33 +337,30 @@ app.post('/users/searchUserDetail', (req, res) => {
 });
 
 async function validateUsers(client,userid) {
-  let nullUseridPw = {"results":[{"userid" : "", "password" : ""}]}   
-  console.log(`In validate users - userid is ${userid}` );
-    // Assemble query
-    // let assembled_query = `SELECT fname,lname,zip,to_char(dob,'yyyy-mm-dd') as dob,email,phone,interests,grown FROM FARMERLINK_USERS where userid = '${data.userid}'`;
-      let assembled_query = `SELECT userid from FARMERLINK_USERS WHERE userid = '${userid}'`
-      console.log("assembled query ->" + assembled_query)
-      const result = await client.query(assembled_query);
+  /*
+  Return true if userid is in the database.
+  @param client database
+  @param userid user id string
+  @retur true if userid in database, false otherwise
+  */
+  //console.log(`In validate users - userid is ${userid}` );
+  // Assemble query
+  // let assembled_query = `SELECT fname,lname,zip,to_char(dob,'yyyy-mm-dd') as dob,email,phone,interests,grown FROM FARMERLINK_USERS where userid = '${data.userid}'`;
+  let assembled_query = `SELECT userid from FARMERLINK_USERS WHERE userid = '${userid}'`
+  //console.log("assembled query ->" + assembled_query)
+  const result = await client.query(assembled_query);
 
-      const results = { 'results': (result) ? result.rows : null};
-      console.log("Inside query -> " + JSON.stringify(results));
-      return results;
+  return result != null && result['rowCount'] > 0;
 }
 async function validatePassword(client,userid,password) {
-  let nullUseridPw = {"results":[{"userid" : "", "password" : ""}]}   
-  console.log(`In validate users - userid is ${userid} password is ${password}` );
+  //console.log(`In validate users - userid is ${userid} password is ${password}` );
     // Assemble query
     // let assembled_query = `SELECT fname,lname,zip,to_char(dob,'yyyy-mm-dd') as dob,email,phone,interests,grown FROM FARMERLINK_USERS where userid = '${data.userid}'`;
-      let assembled_query = `SELECT userid from FARMERLINK_USERS WHERE userid = '${userid}' and password = '${password}'`
-      console.log("assembled query ->" + assembled_query)
-      const result = await client.query(assembled_query);
-
-      const results = { 'results': (result) ? result.rows : null};
-      if (results.length === 0) {
-        results[0] = '{"userid" : "", "password" : ""}';
-      }
-      console.log("Inside query -> " + JSON.stringify(results));
-      return results;
+  let assembled_query = `SELECT userid from FARMERLINK_USERS WHERE userid = '${userid}' and password = '${password}'`
+  //console.log("assembled query ->" + assembled_query)
+  const result = await client.query(assembled_query);
+  //console.log("validatePassword result: -> " + JSON.stringify(result));
+  return result != null && result['rowCount'] > 0;
 }
 //User related end points ends here-----------------------------------------------------
 app.listen(process.env.PORT || port, () => {

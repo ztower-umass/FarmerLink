@@ -12,26 +12,6 @@
   <link rel="stylesheet" type="text/css" href="userPage.css">
 
     <title>FarmerLink</title>
-
-    <script>
-      async function redirectIfNotValidated() {
-        const res = fetch("/users/getUserDetail", {
-          method: "POST",
-          header: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            userid: window.localStorage["username"],
-            password: window.localStorage["password"] 
-          })
-        });
-        if(!(res.message == "Success")) {
-          window.location.href = "/userPage.html"
-        }
-      }
-
-      redirectIfNotValidated();
-    </script>
   </head>
   <body>
     <header class="p-3 bg-dark text-black" id = "main-header">
@@ -88,6 +68,40 @@
       </footer>
 
       <script type = "text/javascript">
+        async function redirectIfNotValidated() {
+
+
+          /*
+            console.log(`username: ${window.localStorage.getItem("username")}`);
+            console.log(`password: ${window.localStorage.getItem("password")}`);
+          */
+            const bodyObj = JSON.stringify({
+            "userid": window.localStorage.getItem("username"),
+            "password": window.localStorage.getItem("password")
+            });
+
+            console.log(`Crops Redirect: bodyObj is ${bodyObj}`)
+            const res = await fetch("/users/getUserDetail", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: bodyObj
+            });
+
+            let data = await res.json();
+            console.log(`response body json is ${JSON.stringify(data)}`);
+            if (!(res.message == "Success")) {
+              window.location.href = "/userPage.html"
+            }
+          }
+        
+        (
+          async function (){
+            await redirectIfNotValidated();
+          }
+        )();
+
         async function getData() {
           let zipCode = document.getElementById("zip").value;
           let url = `https://api.openweathermap.org/data/2.5/weather?zip=${zipCode}&appid=c9e010caf53fc7c997d50622aa448a3e`;
