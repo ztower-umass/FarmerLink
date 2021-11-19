@@ -91,7 +91,7 @@
 
             let data = await res.json();
             console.log(`response body json is ${JSON.stringify(data)}`);
-            if (!(res.message == "Success")) {
+            if (!(data["message"] == "Success")) {
               window.location.href = "/userPage.html"
             }
           }
