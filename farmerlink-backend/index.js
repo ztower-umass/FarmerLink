@@ -180,8 +180,8 @@ app.post('/users/addUserDetail', async (req, res) => {
       const client = await pool.connect();
       validUser = await validateUsers(client,data.userid);
       console.log("valid adduserdetail" + JSON.stringify(validUser));
-      console.log("valid length " + validUser.results.length);
-      if (validUser.results.length !== 0) {
+      
+      if (validUser) {
         const results_null  = {results : []};
         console.log("Userid exists");
         respJSON = results_null 
