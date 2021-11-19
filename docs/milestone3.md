@@ -14,7 +14,7 @@
 
 
 ## Post Table
-![post_table](pics3/comment_table.png)
+![post_table](pics3/post_table.png)
 - This table is used for storing data for all the posts in the forum and has 3 columns.
 - The first column, "user_id" is used for storing the user who has made a particular post. This is stored as a string.
 - The second column, "post_id" is used for storing the id of a particular post. This is stored as a string, typically in uuid4 format.
@@ -82,7 +82,6 @@
     - Postgres Heroku Add-on configuration
     - User authentication, backend + interface
     - Storage of user details
-    - 
 
 ## Scrapped Functionality
 - User search
