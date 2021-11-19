@@ -18,6 +18,7 @@ const headers = {
     //Add Needed Headers
 
 };
+const { v4: uuidv4 } = require('uuid');
 
 //Middleware
 app.use(cors());
@@ -88,25 +89,37 @@ app.post('/forum/getCommentforPost', async (req, res) => {
 });
 
 //Adds new post to server
-app.post('/forum/makePost', (req, res) => {
+app.post('/forum/makePost', async (req, res) => {
   res.set(headers);
   // Use request body appropriately when implementing full back-end functionality
   let data = req.body;
+  let title = data.postTitle;
+  let postID = uuidv4();
+  let userID = data.userID;
   //Store new post appropriately
-  res.send(JSON.stringify(200));
+
+  
+  const client = await pool.connect();
+  let assembled_query = `INSERT INTO Posts VALUES ('${userID}', '${postID}', '${title}');`;
+  const result = await client.query(assembled_query);
+  
+  client.release();
+  res.send(JSON.stringify({"userID": userID, "postID": postID, "title": title}));
 });
 
 //Retrieves posts made by current user
-app.post('/forum/myPosts', (req, res) => {
+app.post('/forum/myPosts', async (req, res) => {
   res.set(headers);
   // Use request body appropriately when implementing full back-end functionality
   let data = req.body;
-  let respJSON = {"title":[]};
+  let userID = data.userID;
 
-  for (let i = 0; i < 5; ++i) {
-    respJSON.title.push(faker.lorem.words());
-  }
-  res.send(JSON.stringify(respJSON));
+  const client = await pool.connect();
+  let assembled_query = `SELECT * FROM Posts WHERE user_id = '${userID}';`;
+  const result = await client.query(assembled_query);
+
+  client.release();
+  res.send(JSON.stringify(result.rows));
 });
 
 app.post('/listings/addListing', async (req, res) => {

@@ -169,8 +169,6 @@
         }
 
         window.onload = async () => {
-
-          getMyPosts();
         
           const posts = await getPostData();
           for (let i = 0; i < posts.length; ++i) {
@@ -321,37 +319,43 @@
 
         async function makePost() {
           createPostModal.style.display = "none";
-          postCreation(max, document.getElementById("new-post-title").value, "You");
+          let title = {"postTitle": document.getElementById("new-post-title").value, "userID": window.localStorage.getItem("username")};
+          
           const res = await fetch("/forum/makePost", {
             method: 'POST',
             mode: 'cors',
             headers: {
               'Content-Type': 'application/json'
-            }
+            },
+            body: JSON.stringify(title)
           });
           let data = await res.json();
+          postCreation(max, document.getElementById("new-post-title").value, window.localStorage.getItem("username"), data.postID);
           alert("Post Created");
         }
 
-        async function getMyPosts() {
+        async function myPosts() {
           const res = await fetch("/forum/myPosts", {
-            method: 'POST',
-            mode: 'cors',
-            headers: {
-              'Content-Type': 'application/json'
-            }
+              method: 'POST',
+              mode: 'cors',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({"userID": window.localStorage.getItem("username")}),
           });
           let data = await res.json();
-          let titleArr = data.title;
+
+          while (document.getElementById("modal-my-posts").firstChild) {
+            document.getElementById("modal-my-posts").removeChild(document.getElementById("modal-my-posts").firstChild);
+          }
+
           let newHeading;
-          for (let i = 0; i < titleArr.length; ++i) {
+          for (let i = 0; i < data.length; ++i) {
             newHeading = document.createElement("h6");
-            newHeading.innerHTML = "Post Title: " + titleArr[i];
+            newHeading.innerHTML = "Post Title: " + data[i].title;
             document.getElementById("modal-my-posts").appendChild(newHeading);
           }
-        }
-
-        function myPosts() {
+          
           myPostsModal.style.display = "block";
         }
 
