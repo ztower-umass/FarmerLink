@@ -1,7 +1,7 @@
 // Vidya changes for database
 const { Pool } = require('pg');
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || "postgres://uzrpwoqpcedeke:e09a1c5fc9d3e0921caa79a61792058366c4248343857f4d2a447c1d8687d0c9@ec2-54-174-172-218.compute-1.amazonaws.com:5432/d1it1qanjcljmu",
+  connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false
   }
@@ -142,7 +142,7 @@ app.get('/listings/getListings', async (req, res) => {
   const result = await client.query(listingsQuery);
   client.release();
   // loop through responses and attach it to response list
-  for(let i = 0; i < result.rows.length; i++) {
+  for(let i = 0; i < result["rowCount"]; i++) {
     let currRow = result.rows[i];
 
     let singleEntry = { "name": "", "location": "", "details": 0, "contact": 0 }

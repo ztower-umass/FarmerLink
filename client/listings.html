@@ -86,33 +86,42 @@
         <button id="SubmitListing" class="btn btn-success">Submit</button>
     </div>
 
-    <footer class="footer mt-auto py-3 bg-dark" id="main-footer">
-        <div class="text-center p-3" id="about-footer">
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="#" class="nav-link px-2 text-white" id="footer-text">About</a></li>
-            </ul>
-        </div>
-    </footer>
+    
     <script type = "text/javascript">
         let localSession = window.localStorage;
         const refreshButtonObj = document.getElementById("refreshBtn");
         const submitButtonObj  = document.getElementById("SubmitListing");
         
-        
+        async function redirectIfNotValidated() {
+
+            if (!userInSession()) {
+                window.location.href = "/userPage.html"
+            }
+        }
+
+        (
+            async function () {
+                await redirectIfNotValidated();
+            }
+        )();
+
         async function userInSession() {
+            const bodyObj = JSON.stringify({
+                "userid": window.localStorage.getItem("username"),
+                "password": window.localStorage.getItem("password")
+            });
+
+            console.log(`Crops Redirect: bodyObj is ${bodyObj}`)
             const res = await fetch("/users/getUserDetail", {
                 method: "POST",
-                header: {
+                headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({
-                    userid: window.localStorage["username"],
-                    password: window.localStorage["password"]
-                })
+                body: bodyObj
             });
-            console.log(res); // TODO fix this
-            console.log(res.message);
-            return res.message == "Success";
+
+            let data = await res.json();
+            return data.message == "Success";
         }
     
         async function submitButton() {
@@ -129,7 +138,7 @@
                 "password": password
             });
 
-            const userData = await fetch("/users/getUserDetail", {
+            const resp = await fetch("/users/getUserDetail", {
                 method: 'POST',
                 mode: 'cors',
                 headers: {
@@ -138,13 +147,16 @@
                 body: fetchBody
             });
 
+            let userData = await resp.json();
+            console.log(`*********************************************************${JSON.stringify(userData)}`);
             if(userData['results'] === null) {
                 alert("Validation error. Log in to try again.");
+                return;
             }  
-            let userFields = userData.results[0];
+            let userFields = userData["results"][0];
             let name     = `${userFields["fname"]} ${userFields["lname"]}`;
             let location = userFields.zip;
-            let contact  = userField.email;
+            let contact  = userFields.email;
             let details  = document.getElementById("formDetails").value; 
 
             let insertResponse = await fetch("/listings/addListing", {
@@ -153,19 +165,19 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: {
+                body: JSON.stringify({
                     name: name,
                     location: location,
                     details: details,
                     contact: contact
-                }
+                })
             });
         }
 
         async function refreshButton() {
             
             
-            let n = 3;
+            
             let res = await fetch("/listings/getListings", {
                 method: 'GET',
                 mode: 'cors',
@@ -178,7 +190,7 @@
             let outerDiv = document.getElementById('listings');
             outerDiv.innerHTML = '';
 
-            for(let i = 0; i < n; i++) {
+            for(let i = 0; i < data.length; i++) {
                 let rowDiv = document.createElement("div");
                 rowDiv.classList.add('row');
                 rowDiv.classList.add('container-fluid');
