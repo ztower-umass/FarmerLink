@@ -305,31 +305,45 @@ app.post('/users/getUserDetail', async (req, res) => {
 
 
 app.post('/users/modifyUserDetail', (req, res) => {
-  console.log("modify modifyUserDetail");
-  res.set(headers);
+  try {
+    let respJSON = {};
+    res.set(headers);
   // Use request body appropriately when implementing full back-end functionality
-  let data = req.body;
-  console.log("modifyUserDetail userid " + data.userid);
-  console.log("modifyUserDetail password "+data.password);
-  console.log("modifyUserDetail fname "+data.fname);
-  console.log("modifyUserDetail lname "+data.lname);
-  console.log("modifyUserDetail zip "+data.zip);
-  console.log("modifyUserDetail birthday "+data.dob);
-  console.log("modifyUserDetail email "+data.email);
-  console.log("modifyUserDetail phone "+data.phone);  
-  console.log("modifyUserDetail interested "+data.interested);
-  console.log("modifyUserDetail grown "+data.grown);
-  
-  let respJSON = {"userid": "", "message": ""};
-  respJSON.userid = data.userid;
-  if (data.userid === "none") {
-    respJSON.message = "Sorry. Invalid modification.";	  
-  }
-  else {
-	respJSON.message = "Success! User " + data.userid +" modified";
-	
-  }
-  res.send(JSON.stringify(respJSON));
+    let data = req.body;
+    const client = await pool.connect();
+    validUser = await validatePassword(client,data.userid,data.password);
+    console.log("valid adduserdetail" + JSON.stringify(validUser));
+    if (!validUser) {
+      const results_null  = {results : []};
+      console.log("Userid exists");
+      respJSON = results_null 
+      respJSON.message = 'Userid/Password is invalid.  Please Double Check';
+      res.send(JSON.stringify(respJSON));
+    } else {
+    // Assemble query
+    // let assembled_query = `SELECT fname,lname,zip,to_char(dob,'yyyy-mm-dd') as dob,email,phone,interests,grown FROM FARMERLINK_USERS where userid = '${data.userid}'`;
+      let assembled_query = `UPDATE FARMERLINK_USERS set (fname,lname,zip,dob,email,phone,interests,grown) = ('${data.fname}','${data.lname}',
+                            '${data.zip}',to_date('${data.dob}','YYYY-MM-DD'),
+                            '${data.email}','${data.phone}','${data.interests}','${data.grown}')
+                             where userid = '${data.userid}'`;
+      console.log("assembled query ->" + assembled_query);
+      const result = await client.query(assembled_query);
+      client.release();
+      const results = { 'results': (result) ? result.rows : null};
+      respJSON = results;
+      console.log("Inside query afters -> " + JSON.stringify(respJSON));
+      //Send success message and results back
+      respJSON.message = 'Success! User Updated';
+      res.send(JSON.stringify(respJSON));
+    }
+} catch (err) {
+    console.error(err);
+    const results = { 'results': {}};
+    respJSON = results;
+    respJSON.message = "Database Error.  Please contact our helpline";
+    console.log("Error " + err);
+    res.send(JSON.stringify(respJSON));
+}
 });
 
 
