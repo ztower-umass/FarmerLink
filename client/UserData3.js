@@ -85,7 +85,8 @@ function getFormData()
 }
 
 function getFormDataSearch () {
-  const formUID = document.getElementById("userid");
+  const formUID = do
+  cument.getElementById("userid");
   let useridVal = formUID.value; 
   const fname = document.getElementById("fname");
   let fnameVal = fname.value;
@@ -361,18 +362,32 @@ async function searchUser() {
 
 } 
 
-function getResults(insArr) {
-  let table = document.getElementById("searchRes");
-  for (const resRow of insArr) {
-	  let row = table.insertRow(-1);
-	  let cell = null;
-	  let i = 0;
-	  for (const ins of resRow)  {
-		  cell = row.insertCell(i++);
-		  cell.innerHTML = ins;
-		}
+function getResults(insJson) {
+    let table = document.getElementById("searchRes");
+    let insArr = insJson;
+    for (const resRow of insArr) {
+        let row = table.insertRow(-1);
+        let cell = null;
+        let i = 0;
+        cell = row.insertCell(i++);
+        cell.innerHTML = resRow.userid;
+        cell = row.insertCell(i++);
+        cell.innerHTML = resRow.fname;
+        cell = row.insertCell(i++);
+        cell.innerHTML = resRow.lname;
+        cell = row.insertCell(i++);
+        cell.innerHTML = resRow.zip;
+        cell = row.insertCell(i++);
+        cell.innerHTML = resRow.email;
+        cell = row.insertCell(i++);
+        cell.innerHTML = resRow.phone;
+        cell = row.insertCell(i++);
+        cell.innerHTML = resRow.interests;
+        cell = row.insertCell(i++);
+        cell.innerHTML = resRow.grown;
+    }
   }
-}
+
 
 function logoutSession() {
 	window.localStorage.clear();

@@ -333,20 +333,97 @@ app.post('/users/modifyUserDetail', (req, res) => {
 });
 
 
+
 //
-app.post('/users/searchUserDetail', (req, res) => {
-  res.set(headers);
-  let data = req.body;
-  console.log("Here " + data.userid);
-  
-  let respJSON = {matchrows : 0,results : []};
-  
-  respJSON.results[0] = ["bobama","Barack","Obama","02111","obama@ob.com","123-444-2255","Mangoes,Plums","Cherry,Tomato"];
-  respJSON.results[1] = ["obama","Barack","Obama","02111","obama@ob.com","123-444-2255","Potato,Plums","Lemon,Tomato"];
-  respJSON.results[2] = ["gbush","George","Bush","02111","obama@ob.com","123-444-2255","Mangoes,Lime","Cherry,Peas"];
-  respJSON.results[3] = ["jcarter","Jimmy","Carter","02111","jc@gm.com","123-444-2255","Mangoes,Lime","Cherry,Peas"];
-  respJSON.matchrows = respJSON.results.length;
-  res.send(JSON.stringify(respJSON));
+app.post('/users/searchUserDetail', async (req, res) => {
+  try {
+    console.log("entering searchUserDetail");
+    let respJSON = {};
+    res.set(headers);
+  // Use request body appropriately when implementing full back-end functionality
+    let data = req.body;
+    const client = await pool.connect();
+    console.log("entering after pool connect");    
+    let where_sw = true; // for SQL first condition should be where and others should be AND
+    let searchArr = []; //  build all conditions in this array
+    i = 0;
+    if (data.userid !== "") {
+       searchArr [i++] = `userid = '${data.userid}'`
+    }
+    if (data.zip !== "") {
+      searchArr [i++] = `zip = '${data.zip}'`
+    }
+    if (data.lname !== "") {
+      searchArr [i++] = `lname = '${data.lname}'`
+    }
+    
+    if (data.fname !== "") {
+      searchArr [i++] = `fname = '${data.fname}'`
+    }
+    //for interested and grown, the condition will be OR with 
+    //the items chosen
+    ("before if "+searchArr);
+    if (data.interested != "") {
+      console.log("data " + data.interested); 
+      let intr = data.interested.split(",");
+      intr_in = " ("
+      for (let j = 0;j < intr.length; j++) {
+        if (j === 0) {
+           intr_in = intr_in + `interests like '%${intr[j]}%'`
+        } else {
+           intr_in =  intr_in +" OR " + `interests like '%${intr[j]}%'`
+        }
+      }
+      intr_in = intr_in + ')';
+      searchArr[i++] = intr_in;
+    }
+    console.log("i is " + i);
+    if (data.grown != "") {
+      let grown = data.grown.split(",");
+      grown_in = "("
+      for (let j = 0;j < grown.length; j++) {
+        if (j === 0) {
+           grown_in = grown_in + `grown like '%${grown[j]}%'`;
+        } else {
+           grown_in =  grown_in + " OR " + `grown like '%${grown[j]}%'`;
+        }
+      }
+      grown_in = grown_in + ')';
+      searchArr[i++] = grown_in
+    }
+    console.log("i is " + i);
+    // Assemble query
+    let assembled_query = `SELECT userid,fname,lname,zip,to_char(dob,'yyyy-mm-dd') as dob,email,phone,interests,grown FROM FARMERLINK_USERS `;
+     let where_clause = "";
+     for (let i = 0; i < searchArr.length; i++) {
+       if (where_sw) {
+          where_clause = ' WHERE '  + searchArr[i];
+          where_sw = false;
+       } else {
+          where_clause = where_clause + ' AND ' + searchArr[i];
+       }
+     }
+
+      assembled_query = assembled_query + where_clause;
+      console.log("assembled query ->" + assembled_query);
+      const result = await client.query(assembled_query);
+      const results = { 'results': (result) ? result.rows : null};
+      client.release();
+      respJSON = results;
+      console.log("Inside query afters -> " + JSON.stringify(respJSON));
+      //Send success message and results back
+      respJSON.message = 'Success';
+      respJSON.matchrows = respJSON.results.length;
+      console.log("matched rows -> " + respJSON.results.length);
+      res.send(JSON.stringify(respJSON));
+    } catch (err) {
+      console.error(err);
+      const results = { 'results': {}};
+      respJSON = results;
+      respJSON.message = "Database Error.  Please contact our helpline";
+      console.log("Error " + err);
+      res.send(JSON.stringify(respJSON));
+  }
 });
 
 async function validateUsers(client,userid) {
