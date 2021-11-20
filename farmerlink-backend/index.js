@@ -304,7 +304,7 @@ app.post('/users/getUserDetail', async (req, res) => {
 
 
 
-app.post('/users/modifyUserDetail', (req, res) => {
+app.post('/users/modifyUserDetail', async (req, res) => {
   try {
     let respJSON = {};
     res.set(headers);
