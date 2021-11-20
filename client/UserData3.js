@@ -85,63 +85,64 @@ function getFormData()
 }
 
 function getFormDataSearch () {
-  const formUID = do
-  cument.getElementById("userid");
-  let useridVal = formUID.value; 
-  const fname = document.getElementById("fname");
-  let fnameVal = fname.value;
-  const lname = document.getElementById("lname");
-  let lnameVal = lname.value;
-  const zip = document.getElementById("zip");
-  let zipVal = zip.value;
-  
-  //making sure the link works
-   console.log("User id "+useridVal+" fname "+fnameVal+" lname "+lnameVal+" zip "+zipVal);
-  
-  let intrList = ["citrus" , "livestock" , "wheat" , "grapes" , "apples" , "banana" , 
-				  "strawberry" , "cabbage" , "cauliflower" , "peas"];
-  let intrArr  = [];
-  let intrArrLen = intrArr.length;
-  for (const intr of intrList)  {
-	  console.log("Intr is " + intr);
-	  intrID = intr + "Sw";
-	  console.log("IntrID is "+intrID);
-	  const swVal = document.getElementById(intrID);
-	  if (swVal.checked) {
-		  intrArr[intrArrLen++] = intr;
-	  }
-  }
-  intrCsv = intrArr.join(",");
-  console.log("Selected Interested Elements : " +intrArr.join(","));
-  
-  // Get List of items selected for grown and 
-  let grownList = ["citrus" , "livestock" , "wheat" , "grapes" , "apples" , "banana" , 
-				  "strawberry" , "cabbage" , "cauliflower" , "peas"];
-  let grownArr  = [];
-  let grownArrLen = grownArr.length;
-  for (const grown of grownList)  {
-	  console.log("Grown is " + grown);
-	  grownID = grown + "GrSw";
-	  console.log("grownID is "+grownID);
-	  const grSwVal = document.getElementById(grownID);
-	  if (grSwVal.checked) {
-		  grownArr[grownArrLen++] = grown;
-	  }
-  }
-  grownCsv = grownArr.join(",");
-  console.log("Selected Interested Elements : " +grownArr.join(","));
-  
-    let inDataStr = '{"userid":"' + useridVal+'"' +", "+
-				   '"fname":'+'"' +fnameVal+'"'+", "+
-				   '"lname":'+'"' +lnameVal+'"'+", "+
-				   '"zip":'+'"' +zipVal+'"'+", "+
-				   '"grown":'+'"' +grownCsv+'"'+", "+
-				   '"interested":'+'"' +intrCsv+'"'+
-				   '}';
-  return inDataStr;
-  
+	const formUID = document.getElementById("userid");
+	let useridVal = formUID.value; 
+	const fname = document.getElementById("fname");
+	let fnameVal = fname.value;
+	const lname = document.getElementById("lname");
+	let lnameVal = lname.value;
+	const zip = document.getElementById("zip");
+	let zipVal = zip.value;
 	
-}
+	//making sure the link works
+	 console.log("User id "+useridVal+" fname "+fnameVal+" lname "+lnameVal+" zip "+zipVal);
+	
+	let intrList = ["citrus" , "livestock" , "wheat" , "grapes" , "apples" , "banana" , 
+					"strawberry" , "cabbage" , "cauliflower" , "peas"];
+	let intrArr  = [];
+	let intrArrLen = intrArr.length;
+	for (const intr of intrList)  {
+		console.log("Intr is " + intr);
+		intrID = intr + "Sw";
+		console.log("IntrID is "+intrID);
+		const swVal = document.getElementById(intrID);
+		if (swVal.checked) {
+			intrArr[intrArrLen++] = intr;
+		}
+	}
+	intrCsv = intrArr.join(",");
+	console.log("Selected Interested Elements : " +intrArr.join(","));
+	
+	// Get List of items selected for grown and 
+	let grownList = ["citrus" , "livestock" , "wheat" , "grapes" , "apples" , "banana" , 
+					"strawberry" , "cabbage" , "cauliflower" , "peas"];
+	let grownArr  = [];
+	let grownArrLen = grownArr.length;
+	for (const grown of grownList)  {
+		console.log("Grown is " + grown);
+		grownID = grown + "GrSw";
+		console.log("grownID is "+grownID);
+		const grSwVal = document.getElementById(grownID);
+		if (grSwVal.checked) {
+			grownArr[grownArrLen++] = grown;
+		}
+	}
+	grownCsv = grownArr.join(",");
+	console.log("Selected Interested Elements : " +grownArr.join(","));
+	
+	  let inDataStr = '{"userid":"' + useridVal+'"' +", "+
+					 '"fname":'+'"' +fnameVal+'"'+", "+
+					 '"lname":'+'"' +lnameVal+'"'+", "+
+					 '"zip":'+'"' +zipVal+'"'+", "+
+					 '"grown":'+'"' +grownCsv+'"'+", "+
+					 '"interested":'+'"' +intrCsv+'"'+
+					 '}';
+	return inDataStr;
+	
+	  
+  }
+  
+
 async function getUsersdb(inData) {
     try {
         let res = await fetch("/users/getUserDetail", {
