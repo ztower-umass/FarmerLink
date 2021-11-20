@@ -57,6 +57,16 @@
 | interests        | String    | list of crops user is interested (but not currently) growing          |
 | grown        | String    | list of crops user is currently growing          |
 
+## Users Table Data
+farmerlink_users_table with test data:
+
+  userid  |    fname     |  lname  |  zip  |    dob     |         email         |    phone     |    interests    |      grown
+----------+--------------+---------+-------+------------+-----------------------+--------------+-----------------+------------------
+ bobama   | barack       | obama   | 02100 | 1962-01-01 | barack@whitehouse.gov | 978-522-2336 | grapes,cabbage  | grapes,livestock
+ gbush    | george       | bush    | 02101 | 1942-01-01 | george@whitehouse.gov | 978-522-2336 | banana,wheat    | banana,peas
+ dtrump   | donald       | trump   | 02101 | 1942-01-05 | donald@whitehouse.gov | 978-522-2336 | livestock,wheat | livestock,peas
+ alincoln | abe          | lincoln | 02109 | 1842-01-05 | abe@whitehouse.gov    | 978-522-2336 | grapes,wheat    | livestock,citrus
+ bclinton | William Jeff | Clinton | 02100 | 1942-01-01 | bill@whitehouse.gov   | 978-522-2335 | citrus,wheat    | banana,peas
 
 ## Division of Labor
  - Sid
@@ -80,9 +90,15 @@
     - 1/2 documentation (i.e. final.md, setup.md, milestone3.md)
  - Vidya
     - Postgres Heroku Add-on configuration
-    - User authentication, backend + interface
+    - User Page
+        - User authentication, backend + interface
+        - User add, modify, backend+interface
+        - Client-side valdation
+    - Search Page
+        - Search users based on search criteria
+        - UI, backend, database integration
+        - Shows search results
     - Storage of user details
 
 ## Scrapped Functionality
-- User search
 - Upvote/downvote
