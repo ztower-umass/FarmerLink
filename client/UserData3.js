@@ -177,7 +177,7 @@ async function getUser() {
 		
 		let resp = await getUsersdb(inData);
 		let data = resp.results;
-		//console.log("Here ->" + JSON.stringify(resp) + "  " + data.length);
+		console.log("Here ->" + JSON.stringify(resp));
 		//console.log("Here2 ->" + JSON.stringify(data));
 		console.log("Here3 ->" + resp.message);
 		//set values retrieved from database.
