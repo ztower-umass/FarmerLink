@@ -254,10 +254,10 @@ app.post('/users/getUserDetail', async (req, res) => {
     if ( !validUser || !validPw) { // incorrect username / pass
       console.log("invalid username");
       const results_null  = {
-        body: {
+        //body: {
           "results": null,
           "message": "Failure (incorrect username or password)"
-        }
+       // }
       };
       
       // send the failure message back
