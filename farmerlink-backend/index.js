@@ -319,7 +319,7 @@ app.post('/users/modifyUserDetail', async (req, res) => {
       respJSON = results_null 
       respJSON.message = 'Userid/Password is invalid.  Please Double Check';
       res.send(JSON.stringify(respJSON));
-    } else {
+    } else { 
     // Assemble query
     // let assembled_query = `SELECT fname,lname,zip,to_char(dob,'yyyy-mm-dd') as dob,email,phone,interests,grown FROM FARMERLINK_USERS where userid = '${data.userid}'`;
       let assembled_query = `UPDATE FARMERLINK_USERS set (fname,lname,zip,dob,email,phone,interests,grown) = ('${data.fname}','${data.lname}',
