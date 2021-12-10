@@ -192,7 +192,6 @@ All user authentication happens via the Profile interface. For a registered user
     * General to-do (feel free
     * Flush DB
     * Add favicon.ico
-    * Add user first name in header
 * Everyone
     * Make video introduction IRL
     * Make video showcasing and explaining the FarmerLink feature you implemented
