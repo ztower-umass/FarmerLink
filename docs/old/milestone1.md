@@ -33,19 +33,19 @@ Wireframes were drafted by hand originally to map out how different components o
 
 ### Login, forum portal, and link to listings
 
-![Login, forum portal, and link to listings](pics/wf2.png)
+![Login, forum portal, and link to listings](../pics/wf2.png)
 
 ### Listing, profile search
 
-![Listing, profile search](pics/wf3.png)
+![Listing, profile search](../pics/wf3.png)
 
 ### Crop coordination, forum directory
 
-![Crop coordination, forum directory](pics/wf4.png)
+![Crop coordination, forum directory](../pics/wf4.png)
 
 ### Thread body, entire sitemap and division of labor
 
-![Thread body, entire sitemap and division of labor](pics/wf5.png)
+![Thread body, entire sitemap and division of labor](../pics/wf5.png)
 
 ## HTML, CSS, Bootstrap Mockups
 
@@ -53,24 +53,24 @@ The following is a collection of screenshots that demonstrate the current site m
 
 ### Landing page, shows slideshow and a signin/signup bar
 
-![Landing page, shows slideshow and a signin/signup bar](pics/landing.png)
+![Landing page, shows slideshow and a signin/signup bar](../pics/landing.png)
 
 ### Search page, shows search bar
 
-![Search page, shows search bar](pics/search.png)
+![Search page, shows search bar](../pics/search.png)
 
 ### Listings, shows all listings on the site
 
-![Listings, shows all listings on the site](pics/listings.png)
+![Listings, shows all listings on the site](../pics/listings.png)
 
 ### Forum, shows all forum posts
 
-![Forum, shows all forum posts](pics/forum.png)
+![Forum, shows all forum posts](../pics/forum.png)
 
 ### Crops, shows crop data for your area
 
-![Crops, shows crop data for your area](pics/crops.png)
+![Crops, shows crop data for your area](../pics/crops.png)
 
 ### UserPage, shows user profile information
 
-![UserPage, shows user profile information](pics/user.PNG)
+![UserPage, shows user profile information](../pics/user.PNG)

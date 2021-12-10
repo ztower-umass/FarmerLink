@@ -114,28 +114,28 @@ Endpoints with description:
 
 Forum:
 
-![](pics2/Picture1.png)
+![](../pics2/Picture1.png)
 
 Main Forum Page:
 
-![](pics2/Picture2.png)
+![](../pics2/Picture2.png)
 
 Post Interface: U/D change the upvote and downvote counter. Comment opens the interface the post comments and view comments displays all comments related to the current post.
 
-![](pics2/Picture3.png)
+![](../pics2/Picture3.png)
 
-![](pics2/Picture4.png)
+![](../pics2/Picture4.png)
 
 Interface to Post/View Comments. Post adds the comment to server and view retrieves all the relevant comments from the server.
 
-![](pics2/Picture5.png)
+![](../pics2/Picture5.png)
 
-![](pics2/Picture6.png)
+![](../pics2/Picture6.png)
 
 Interface to create a new Post/view the current user’s posts. Create post adds the post to the global feed and My Posts retrieves all the current user’s posts from the server.
 
 Crops:
 
-![](pics2/Picture7.png)
+![](../pics2/Picture7.png)
 
 
