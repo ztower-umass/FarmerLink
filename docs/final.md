@@ -42,12 +42,6 @@ Endpoints with description:
 * Used to add a comment to a specific post
 * POST data will have data such as the name of the comment and the user posting it
 
-'/forum/upvote' AND '/forum/downvote'
-
-* POST request
-* Used to Upvoted/Downvote a specific post
-* POST data will have the post’s information so it can be modified accordingly
-
 '/forum/getCommentforPost'
 
 * POST request
