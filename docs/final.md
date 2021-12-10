@@ -189,7 +189,7 @@ All user authentication happens via the Profile interface. For a registered user
     * Polishing other pages (user login, user search)
 * Sid
     * Fix page footer (“about”) — too big
-    * General to-do (feel free
+    * Cleaned up Forum and Crop interface
     * Flush DB
     * Add favicon.ico
 * Everyone
