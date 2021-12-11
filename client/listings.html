@@ -16,6 +16,41 @@
     <link rel="shortcut icon" type="image/x-icon" href="favicon-2.ico"/>
 
     <title>FarmerLink</title>
+    <script type="text/javascript">
+        async function redirectIfNotValidated() {
+
+
+            /*
+              console.log(`username: ${window.localStorage.getItem("username")}`);
+              console.log(`password: ${window.localStorage.getItem("password")}`);
+            */
+            const bodyObj = JSON.stringify({
+                "userid": window.localStorage.getItem("username"),
+                "password": window.localStorage.getItem("password")
+            });
+
+            console.log(`Crops Redirect: bodyObj is ${bodyObj}`)
+            const res = await fetch("/users/getUserDetail", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: bodyObj
+            });
+
+            let data = await res.json();
+            console.log(`response body json is ${JSON.stringify(data)}`);
+            if (!(data["message"] == "Success")) {
+                window.location.href = "/userPage.html"
+            }
+        }
+
+        (
+            async function () {
+                await redirectIfNotValidated();
+            }
+        )();
+    </script>
 </head>
 
 <body>
