@@ -191,6 +191,48 @@ All user authentication happens via the Profile interface. For a registered user
     * Make video showcasing and explaining the FarmerLink feature you implemented
     * Write up rubric
 
+## Rubric
+
+* General           ___ / 10 pts
+    * Authentication
+    * Successfully create a user through sign up
+    * Successfully login a user
+    * Only able to view the details of the inner pages if you are a user.
+    * We acknowledge that the page will start to load the html if you are not logged in;
+however, no details will be displayed.
+    * Routing
+    * Linting/ code style
+* Crop Page         ___ / 20 pts
+    * Successfully enter a US ZIP code and retrieve crop and weather data
+* Forum Page       ___ / 20 pts
+    * Successfully view posts on the forum when logged in
+    * Successfully create posts to the forum
+    * Successfully view your own posts
+    * Successfully create a comment on a post
+    * Successfully view comments on a post
+* User Page __/ 20
+    * Login functionality
+    * Login button works
+    * Fields are populated with user details upon login
+    * Logout works
+    * Login session persists when accessing login-only pages (i.e. listings, etc.)
+    * Successfully updates profiles with new information
+    * Successfully creates profiles
+* User Search __/ 10
+    * Successfully enter user information
+    * Successfully retrieves searched information
+    * User information on the search page is accurate
+* Listing Page         ___ / 20 pts
+    * View new listings persistently when page is refreshed
+    * View page only when logged in (redirect otherwise)
+    * Logged in user can make post and have data fields fill in automatically
+* Heroku deployment: __ / 10
+* Video: __ / 10
+    *  High quality video production
+    *  All users give an in-person introduction
+    * All features are reviewed
+    * Video wraps up with a conclusion
+
 ## Conclusions
 
 Generally speaking, the team was very successful in creating a viable working product for the given timeline. We had great luck working with Bootstrap, getting our SQL database to work, and working with the native Heroku deployment environment. Overall, we had very few blockers that completely halted our progress with the project.
